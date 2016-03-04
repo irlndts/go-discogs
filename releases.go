@@ -16,7 +16,7 @@ type ReleaseParams struct {
 
 type Release struct {
 	Title string `json:"title"`
-	//id           int
+	Id    int    `json:"id"`
 	//data_quality string
 }
 

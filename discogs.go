@@ -7,7 +7,7 @@ import (
 
 const (
 	discogsAPI = "https://api.discogs.com/"
-	useragent  = "TestDiscogsClient/0.0.1 +http://irlndts.moscow"
+	useragent  = "Test UserAgent"
 )
 
 // Client is a Discogs client for making Discogs API requests.
@@ -24,4 +24,10 @@ func NewClient(httpClient *http.Client) *Client {
 		api:     base,
 		Release: newReleaseService(base.New()),
 	}
+}
+
+// discogs require specified user agent
+func (c *Client) UserAgent(useragent string) *Client {
+	c.api.Set("User-Agent", useragent)
+	return c
 }

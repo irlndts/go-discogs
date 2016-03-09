@@ -9,11 +9,10 @@ import (
 
 func main() {
 	client := &http.Client{}
-	d := discogs.NewClient(client)
-	params := &discogs.ReleaseParams{12345}
-	release, resp, err := d.Release.Release(params)
-	fmt.Println(release.Title)
-	fmt.Println(resp)
+	d := discogs.NewClient(client).UserAgent("TestDiscogsClient/0.0.1 +http://irlndts.moscow")
+	params := &discogs.ReleaseParams{Release_id: "1"}
+	release, _, err := d.Release.Release(params)
+	fmt.Println(release)
 	fmt.Println(err)
 
 }

@@ -151,6 +151,7 @@ func newReleaseService(api *apirequest.API) *ReleaseService {
 
 func (self *ReleaseService) Release(params *ReleaseParams) (*Release, *http.Response, error) {
 	release := new(Release)
-	resp, err := self.api.New().Get(params.Release_id).QueryStruct(params).Receive(release, nil)
-	return release, resp, err
+	apiError := new(APIError)
+	resp, err := self.api.New().Get(params.Release_id).QueryStruct(params).Receive(release, apiError)
+	return release, resp, relevantError(err, *apiError)
 }

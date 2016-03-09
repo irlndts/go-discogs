@@ -12,6 +12,10 @@ func main() {
 	d := discogs.NewClient(client).UserAgent("TestDiscogsClient/0.0.1 +http://irlndts.moscow")
 	params := &discogs.ReleaseParams{Release_id: "1"}
 	release, _, err := d.Release.Release(params)
-	fmt.Println(release)
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(release)
+	}
+	//fmt.Println(resp)
 }

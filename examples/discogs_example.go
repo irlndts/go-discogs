@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/irlndts/go-discogs"
-	//	"io/ioutil"
 	"net/http"
 )
 

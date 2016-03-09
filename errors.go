@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-// APIError represents a Twitter API Error response
-// https://dev.twitter.com/overview/api/response-codes
+// APIError represents a Discogs API Error response
 type APIError struct {
 	Message string `json:"message"`
 }

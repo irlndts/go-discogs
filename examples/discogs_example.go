@@ -14,5 +14,4 @@ func main() {
 	release, _, err := d.Release.Release(params)
 	fmt.Println(release)
 	fmt.Println(err)
-
 }

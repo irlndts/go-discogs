@@ -15,13 +15,13 @@ func main() {
 		release, _, err := d.Release.Release(params)
 	*/
 	params := &discogs.LabelParams{Label_id: "1000"}
-	label, _, err := d.Label.Label(params)
+	label, _, err := d.Label.Releases(params)
 
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		//fmt.Println(release.Title)
-		fmt.Println(label.Name)
+		fmt.Println(label.Releases[0].Title)
 	}
 	//fmt.Println(resp)
 }

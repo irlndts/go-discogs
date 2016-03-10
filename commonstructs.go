@@ -126,3 +126,15 @@ type Sublable struct {
 	Id           int    `json:"id"`
 	Name         string `json:"name"`
 }
+
+type ReleaseSource struct {
+	Artist       string `json:"artist"`
+	Catno        string `json:"catno"`
+	Format       string `json:"format"`
+	Id           int    `json:"id"`
+	Resource_url string `json:"resource_url"`
+	Status       string `json:"status"`
+	Thumb        string `json:"thumb"`
+	Title        string `json:"title"`
+	Year         int    `json:"year"`
+}

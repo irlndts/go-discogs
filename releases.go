@@ -31,7 +31,7 @@ type Release struct {
 	Genres             []string       `json:"genres"`
 	Identifiers        []Identifier   `json:"identifiers"`
 	Images             []Image        `json:"images"`
-	Labels             []Label        `json:"labels"`
+	Labels             []LabelSource  `json:"labels"`
 	Master_id          int            `json:"master_id"`
 	Master_url         string         `json:"master_url"`
 	Notes              string         `josn:"notes"`

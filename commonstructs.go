@@ -35,7 +35,7 @@ type Track struct {
 	Extraartists []ArtistSource `json:"extraartists"`
 }
 
-type Label struct {
+type LabelSource struct {
 	Catno        string `json:"catno"`
 	Entity_type  string `json:"entity_type"`
 	Id           int    `json:"id"`
@@ -119,4 +119,10 @@ type Member struct {
 	Id           int    `json:"id"`
 	Name         string `json:"name"`
 	Resource_url string `json:"resource_url"`
+}
+
+type Sublable struct {
+	Resource_url string `json:"url"`
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
 }

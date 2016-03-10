@@ -15,6 +15,7 @@ type Client struct {
 	api     *apirequest.API
 	Release *ReleaseService
 	Master  *MasterService
+	Artist  *ArtistService
 }
 
 // NewClient returns a new Client.
@@ -25,6 +26,7 @@ func NewClient(httpClient *http.Client) *Client {
 		api:     base,
 		Release: newReleaseService(base.New()),
 		Master:  newMasterService(base.New()),
+		Artist:  newArtistService(base.New()),
 	}
 }
 

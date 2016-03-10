@@ -8,7 +8,7 @@ type Video struct {
 	Uri         string `json:"uri"`
 }
 
-type Artist struct {
+type ArtistSource struct {
 	Anv          string `json:"anv"`
 	Id           int    `json:"id"`
 	Join         string `json:"join"`
@@ -28,21 +28,11 @@ type Image struct {
 }
 
 type Track struct {
-	Duration     string        `json:"duration"`
-	Position     string        `json:"position"`
-	Title        string        `json:"title"`
-	Type         string        `json:"type_"`
-	Extraartists []Extraartist `json:"extraartists"`
-}
-
-type Extraartist struct {
-	Anv          string `json:"anv"`
-	Id           int    `json:"id"`
-	Join         string `json:"join"`
-	Name         string `json:"name"`
-	Resource_url string `json:"resource_url"`
-	Role         string `json:"role"`
-	Tracks       string `json:"tracks"`
+	Duration     string         `json:"duration"`
+	Position     string         `json:"position"`
+	Title        string         `json:"title"`
+	Type         string         `json:"type_"`
+	Extraartists []ArtistSource `json:"extraartists"`
 }
 
 type Label struct {
@@ -122,4 +112,11 @@ type Version struct {
 	Status       string `json:"status"`
 	Thumb        string `json:"thumb"`
 	Title        string `json:"title"`
+}
+
+type Member struct {
+	Active       bool   `json:"active"`
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Resource_url string `json:"resource_url"`
 }

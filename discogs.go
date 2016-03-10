@@ -14,6 +14,7 @@ const (
 type Client struct {
 	api     *apirequest.API
 	Release *ReleaseService
+	Master  *MasterService
 }
 
 // NewClient returns a new Client.
@@ -23,6 +24,7 @@ func NewClient(httpClient *http.Client) *Client {
 	return &Client{
 		api:     base,
 		Release: newReleaseService(base.New()),
+		Master:  newMasterService(base.New()),
 	}
 }
 

@@ -25,14 +25,10 @@ Usage
 The discogs package provides a client for accessing the Discogs API. 
 First of all import library and init client variable. According to discogs api documentation you [must provide your user-agent](https://www.discogs.com/developers/#page:home,header:home-general-information). 
 ```go
-  package main
-    
-  import (
-    "github.com/irlndts/go-discogs"
-  )
- ```
- ```go
- client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com")
+import "github.com/irlndts/go-discogs"
+```
+```go
+client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com")
 ``` 
 
 #### Releases

@@ -20,8 +20,8 @@ type Client struct {
 }
 
 // NewClient returns a new Client.
-func NewClient(httpClient *http.Client) *Client {
-	base := apirequest.New().Client(httpClient).Base(discogsAPI).Add("User-Agent", useragent)
+func NewClient() *Client {
+	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI).Add("User-Agent", useragent)
 
 	return &Client{
 		api:     base,

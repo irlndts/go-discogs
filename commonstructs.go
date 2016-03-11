@@ -137,4 +137,7 @@ type ReleaseSource struct {
 	Thumb        string `json:"thumb"`
 	Title        string `json:"title"`
 	Year         int    `json:"year"`
+	Main_release int    `json:"main_release"`
+	Role         string `json:"role"`
+	Type         string `json:"type"`
 }

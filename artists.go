@@ -10,7 +10,11 @@ type ArtistService struct {
 }
 
 type ArtistParams struct {
-	Artist_id string
+	Artist_id  string
+	Sort       string // year, title, format
+	Sort_order string // asc, desc
+	Page       int
+	Per_page   int
 }
 
 type Artist struct {
@@ -26,6 +30,11 @@ type Artist struct {
 	Members        []Member `json:"members"`
 }
 
+type ArtistReleases struct {
+	Paginastion Page            `json:"pagination"`
+	Releases    []ReleaseSource `json:"releases"`
+}
+
 func newArtistService(api *apirequest.API) *ArtistService {
 	return &ArtistService{
 		api: api.Path("artists/"),
@@ -38,4 +47,12 @@ func (self *ArtistService) Artist(params *ArtistParams) (*Artist, *http.Response
 
 	resp, err := self.api.New().Get(params.Artist_id).Receive(artist, apiError)
 	return artist, resp, relevantError(err, *apiError)
+}
+
+func (self *ArtistService) Releases(params *ArtistParams) (*ArtistReleases, *http.Response, error) {
+	releases := new(ArtistReleases)
+	apiError := new(APIError)
+
+	resp, err := self.api.New().Get(params.Artist_id+"/releases").QueryStruct(params).Receive(releases, apiError)
+	return releases, resp, relevantError(err, *apiError)
 }

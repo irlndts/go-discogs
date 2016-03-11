@@ -16,3 +16,14 @@ func TestArtistService_Artist(t *testing.T) {
 	check(t, err)
 	assert(t, artist.Id == expectedId, fmt.Sprintf("Release.Title looked for %s, and received %s ", expectedId, artist.Id))
 }
+
+func TestArtistService_Releases(t *testing.T) {
+	expectedArtist := "Dave Clarke"
+
+	client := &http.Client{}
+	d := NewClient(client).UserAgent("UnitTestClient/0.0.1 +https://github.com/irlndts/go-discogs")
+	releases, _, err := d.Artist.Releases(&ArtistParams{Artist_id: "1000", Sort: "year", Sort_order: "desc"})
+
+	check(t, err)
+	assert(t, releases.Releases[0].Artist == expectedArtist, fmt.Sprintf("Releses.Artist looked for %s, and received %s ", expectedArtist, releases.Releases[0].Artist))
+}

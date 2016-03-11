@@ -29,12 +29,10 @@ First of all import library and init client variable. According to discogs api d
     
   import (
     "github.com/irlndts/go-discogs"
-    "net/http"
   )
-    
-  func main(){
-    client := discogs.NewClient(&http.Client{}).UserAgent("TestDiscogsClient/0.0.1 +example.com")
-    //.... 
+ ```
+ ```go
+ client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com")
 ``` 
 
 #### Releases

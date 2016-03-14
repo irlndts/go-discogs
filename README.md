@@ -34,7 +34,7 @@ client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com")
 #### Releases
 ```go
   params := &discogs.ReleaseParams{Release_id: "8138518"}
-  release, _, err := d.Release.Release(params)
+  release, _, err := client.Release.Release(params)
   
   fmt.Println(fmt.Println(release.Artists[0].Name, " - ", release.Title)) // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```
@@ -42,7 +42,7 @@ client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com")
 #### Artists
 ```go
   params := &discogs.LabelParams{Label_id: "890477", Page: 2, Per_page: 3}
-  label, _, err := d.Label.Releases(params)
+  label, _, err := client.Label.Releases(params)
 
   for _, release := range label.Releases {
     fmt.Println(release.Title)

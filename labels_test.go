@@ -16,7 +16,7 @@ func TestLabelService_Label(t *testing.T) {
 }
 
 func TestLabelService_Releases(t *testing.T) {
-	expectedId := "Good Time"
+	expectedId := "Cha Cha Twist"
 
 	d := NewClient().UserAgent("UnitTestClient/0.0.1 +https://github.com/irlndts/go-discogs")
 	label, _, err := d.Label.Releases(&LabelParams{Label_id: "1000"})

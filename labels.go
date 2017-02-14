@@ -11,23 +11,23 @@ type LabelService struct {
 }
 
 type LabelParams struct {
-	LabelID string
-	Page    int
-	PerPage int
+	Label_id string
+	Page     int
+	Per_Page int
 }
 
 type Label struct {
-	Profile     string     `json:"profile"`
-	ReleasesUrl string     `json:"releases_url"`
-	Name        string     `json:"name"`
-	ContactInfo string     `json:"contact_info"`
-	Uri         string     `json:"uri"`
-	Sublabels   []Sublable `json:"sublabels"`
-	Urls        []string   `json:"urls"`
-	Images      []Image    `json:"images"`
-	ResourceUrl string     `json:"resource_url"`
-	Id          int        `json:"id"`
-	DataQuality string     `json:"data_quality"`
+	Profile      string     `json:"profile"`
+	Releases_url string     `json:"releases_url"`
+	Name         string     `json:"name"`
+	Contact_info string     `json:"contact_info"`
+	Uri          string     `json:"uri"`
+	Sublabels    []Sublable `json:"sublabels"`
+	Urls         []string   `json:"urls"`
+	Images       []Image    `json:"images"`
+	Resource_url string     `json:"resource_url"`
+	Id           int        `json:"id"`
+	Data_quality string     `json:"data_quality"`
 }
 
 type LabelReleases struct {
@@ -45,7 +45,7 @@ func (self *LabelService) Label(params *LabelParams) (*Label, *http.Response, er
 	label := new(Label)
 	apiError := new(APIError)
 
-	resp, err := self.api.New().Get(params.LabelID).Receive(label, apiError)
+	resp, err := self.api.New().Get(params.Label_id).Receive(label, apiError)
 	return label, resp, relevantError(err, *apiError)
 }
 
@@ -53,6 +53,6 @@ func (self *LabelService) Releases(params *LabelParams) (*LabelReleases, *http.R
 	releases := new(LabelReleases)
 	apiError := new(APIError)
 
-	resp, err := self.api.New().Get(params.LabelID+"/releases").QueryStruct(params).Receive(releases, apiError)
+	resp, err := self.api.New().Get(params.Label_id+"/releases").QueryStruct(params).Receive(releases, apiError)
 	return releases, resp, relevantError(err, *apiError)
 }

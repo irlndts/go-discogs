@@ -7,10 +7,7 @@ import (
 )
 
 const (
-	libVeresion = "0.1"
-	discogsAPI  = "https://api.discogs.com/"
-	useragent   = "irlndts/go-discogs/0.1"
-	token       = "oQTQKAprakIQfWOkAxTdYyDpgUqahHtdbHTuYkIy"
+	discogsAPI = "https://api.discogs.com/"
 )
 
 // Client is a Discogs client for making Discogs API requests.
@@ -24,8 +21,8 @@ type Client struct {
 }
 
 // NewClient returns a new Client.
-func NewClient() *Client {
-	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI).Add("User-Agent", useragent) //.Add("Authorization", "Discogs token="+token)
+func NewClient(useragent, token string) *Client {
+	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI).Add("User-Agent", useragent).Add("Authorization", "Discogs token="+token)
 
 	return &Client{
 		api:     base,
@@ -33,7 +30,7 @@ func NewClient() *Client {
 		Label:   newLabelService(base.New()),
 		Master:  newMasterService(base.New()),
 		Release: newReleaseService(base.New()),
-		Search:  newSearchService(base),
+		Search:  newSearchService(base.New()),
 	}
 }
 

@@ -1,8 +1,9 @@
 package discogs
 
 import (
-	"github.com/irlndts/go-apirequest"
 	"net/http"
+
+	"github.com/irlndts/go-apirequest"
 )
 
 type LabelService struct {
@@ -12,7 +13,7 @@ type LabelService struct {
 type LabelParams struct {
 	Label_id string
 	Page     int
-	Per_page int
+	Per_Page int
 }
 
 type Label struct {

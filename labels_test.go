@@ -8,7 +8,7 @@ import (
 func TestLabelService_Label(t *testing.T) {
 	expectedId := 1000
 
-	d := NewClient().UserAgent("UnitTestClient/0.0.1 +https://github.com/irlndts/go-discogs")
+	d := NewClient(testUserAgent, testToken)
 	label, _, err := d.Label.Label(&LabelParams{Label_id: "1000"})
 
 	check(t, err)
@@ -18,7 +18,7 @@ func TestLabelService_Label(t *testing.T) {
 func TestLabelService_Releases(t *testing.T) {
 	expectedId := "Cha Cha Twist"
 
-	d := NewClient().UserAgent("UnitTestClient/0.0.1 +https://github.com/irlndts/go-discogs")
+	d := NewClient(testUserAgent, testToken)
 	label, _, err := d.Label.Releases(&LabelParams{Label_id: "1000"})
 
 	check(t, err)

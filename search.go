@@ -6,10 +6,12 @@ import (
 	"github.com/irlndts/go-apirequest"
 )
 
+// SearchService ...
 type SearchService struct {
 	api *apirequest.API
 }
 
+// SerachRequest implements search request model
 type SearchRequest struct {
 	Q             string // search query (optional)
 	Type          string // one of release, master, artist, label (optional)
@@ -34,11 +36,13 @@ type SearchRequest struct {
 	Per_page int // optional
 }
 
+// Search describes search response
 type Search struct {
 	Pagination Page     `json:"pagination"`
 	Results    []Result `json:"results"`
 }
 
+// Result describes a part of search result
 type Result struct {
 	Style        []string  `json:"style"`
 	Thumb        string    `json:"thumb"`
@@ -62,6 +66,7 @@ func newSearchService(api *apirequest.API) *SearchService {
 	}
 }
 
+// Search makes search request to discogs
 func (self *SearchService) Search(params *SearchRequest) (*Search, *http.Response, error) {
 	search := new(Search)
 	apiError := new(APIError)

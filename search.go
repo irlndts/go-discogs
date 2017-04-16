@@ -11,7 +11,7 @@ type SearchService struct {
 	api *apirequest.API
 }
 
-// SerachRequest implements search request model
+// SerachRequest describes search request json
 type SearchRequest struct {
 	Q             string // search query (optional)
 	Type          string // one of release, master, artist, label (optional)
@@ -39,25 +39,25 @@ type SearchRequest struct {
 // Search describes search response
 type Search struct {
 	Pagination Page     `json:"pagination"`
-	Results    []Result `json:"results"`
+	Results    []Result `json:"results,omitempty"`
 }
 
 // Result describes a part of search result
 type Result struct {
-	Style        []string  `json:"style"`
-	Thumb        string    `json:"thumb"`
-	Title        string    `json:"title"`
-	Country      string    `json:"country"`
-	Format       []string  `json:"format"`
-	Uri          string    `json:"uri"`
-	Community    Community `json:"community"`
-	Label        []string  `json:"label"`
-	Catno        string    `json:"catno"`
-	Year         string    `json:"year"`
-	Genre        []string  `json:"genre"`
-	Resource_url string    `json:"resource_url"`
-	Type         string    `json:"type"`
-	Id           int       `json:"id"`
+	Style        []string  `json:"style,omitempty"`
+	Thumb        string    `json:"thumb,omitempty"`
+	Title        string    `json:"title,omitempty"`
+	Country      string    `json:"country,omitempty"`
+	Format       []string  `json:"format,omitempty"`
+	Uri          string    `json:"uri,omitempty"`
+	Community    Community `json:"community,omitempty"`
+	Label        []string  `json:"label,omitempty"`
+	Catno        string    `json:"catno,omitempty"`
+	Year         string    `json:"year,omitempty"`
+	Genre        []string  `json:"genre,omitempty"`
+	Resource_url string    `json:"resource_url,omitempty"`
+	Type         string    `json:"type,omitempty"`
+	Id           int       `json:"id,omitempty"`
 }
 
 func newSearchService(api *apirequest.API) *SearchService {
@@ -66,7 +66,10 @@ func newSearchService(api *apirequest.API) *SearchService {
 	}
 }
 
-// Search makes search request to discogs
+// Search makes search request to discogs.
+// Issue a search query to our database. This endpoint accepts pagination parameters.
+// Authentication (as any user) is required.
+// https://www.discogs.com/developers/#page:database,header:database-search
 func (self *SearchService) Search(params *SearchRequest) (*Search, *http.Response, error) {
 	search := new(Search)
 	apiError := new(APIError)

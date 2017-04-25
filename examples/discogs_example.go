@@ -9,7 +9,7 @@ import (
 func main() {
 	d := discogs.NewClient("TestDiscogsClient/0.0.1 +http://irlndts.moscow", "")
 
-	request := &discogs.SearchRequest{Q: "The Reggaenauts - River Rock / Thursday Kick-off", Page: 0, Per_page: 1}
+	request := &discogs.SearchRequest{Q: "The Swindlers - Dig Out Alive!", Page: 0, Per_page: 1}
 	search, _, err := d.Search.Search(request)
 
 	if err != nil {
@@ -18,6 +18,12 @@ func main() {
 	}
 
 	for _, r := range search.Results {
-		fmt.Println(r.Id, r.Title)
+		fmt.Printf("%+v\n", r)
+		//fmt.Println(r.Id, r.Title)
+
+		release, _ := d.Release(r.ID)
+		fmt.Printf("%+v\n", release)
+
 	}
+
 }

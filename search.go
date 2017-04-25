@@ -44,20 +44,20 @@ type Search struct {
 
 // Result describes a part of search result
 type Result struct {
-	Style        []string  `json:"style,omitempty"`
-	Thumb        string    `json:"thumb,omitempty"`
-	Title        string    `json:"title,omitempty"`
-	Country      string    `json:"country,omitempty"`
-	Format       []string  `json:"format,omitempty"`
-	Uri          string    `json:"uri,omitempty"`
-	Community    Community `json:"community,omitempty"`
-	Label        []string  `json:"label,omitempty"`
-	Catno        string    `json:"catno,omitempty"`
-	Year         string    `json:"year,omitempty"`
-	Genre        []string  `json:"genre,omitempty"`
-	Resource_url string    `json:"resource_url,omitempty"`
-	Type         string    `json:"type,omitempty"`
-	Id           int       `json:"id,omitempty"`
+	Style       []string  `json:"style,omitempty"`
+	Thumb       string    `json:"thumb,omitempty"`
+	Title       string    `json:"title,omitempty"`
+	Country     string    `json:"country,omitempty"`
+	Format      []string  `json:"format,omitempty"`
+	URI         string    `json:"uri,omitempty"`
+	Community   Community `json:"community,omitempty"`
+	Label       []string  `json:"label,omitempty"`
+	Catno       string    `json:"catno,omitempty"`
+	Year        string    `json:"year,omitempty"`
+	Genre       []string  `json:"genre,omitempty"`
+	ResourceURL string    `json:"resource_url,omitempty"`
+	Type        string    `json:"type,omitempty"`
+	ID          int       `json:"id,omitempty"`
 }
 
 func newSearchService(api *apirequest.API) *SearchService {

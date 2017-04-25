@@ -16,7 +16,7 @@ func TestLabelService_Label(t *testing.T) {
 }
 
 func TestLabelService_Releases(t *testing.T) {
-	expectedId := "Cha Cha Twist"
+	expectedId := "Ghetto Sol"
 
 	d := NewClient(testUserAgent, testToken)
 	label, _, err := d.Label.Releases(&LabelParams{Label_id: "1000"})

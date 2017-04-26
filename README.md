@@ -41,10 +41,9 @@ client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "sometoken")
 
 #### Releases
 ```go
-  params := &discogs.ReleaseParams{Release_id: "8138518"}
-  release, _, err := client.Release.Release(params)
+  release, err := client..Release(9893847)
   
-  fmt.Println(fmt.Println(release.Artists[0].Name, " - ", release.Title)) // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
+  fmt.Println(release.Artists[0].Name, " - ", release.Title) // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```
 
 #### Artists

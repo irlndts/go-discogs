@@ -1,61 +1,56 @@
 package discogs
 
 import (
-	"github.com/irlndts/go-apirequest"
-	"net/http"
+	"strconv"
 )
 
-type ReleaseService struct {
-	api *apirequest.API
-}
-
-type ReleaseParams struct {
-	Release_id string
-}
-
+// Release serves relesase response from discogs
 type Release struct {
-	Title              string         `json:"title"`
-	Id                 int            `json:"id"`
-	Artists            []ArtistSource `json:"artists"`
-	Data_quality       string         `json:"data_quality"`
-	Thumb              string         `json:"thumb"`
-	Community          Community      `json:"community"`
-	Companies          []Company      `json:"companies"`
-	Country            string         `json:"country"`
-	Date_added         string         `json:"date_added"`
-	Date_changed       string         `json:"date_changed"`
-	Estimated_weight   int            `json:"estimated_weight"`
-	Extraartists       []ArtistSource `json:"extraartists"`
-	Format_quantity    int            `json:"format_quantity"`
-	Formats            []Format       `json:"formats"`
-	Genres             []string       `json:"genres"`
-	Identifiers        []Identifier   `json:"identifiers"`
-	Images             []Image        `json:"images"`
-	Labels             []LabelSource  `json:"labels"`
-	Master_id          int            `json:"master_id"`
-	Master_url         string         `json:"master_url"`
-	Notes              string         `josn:"notes"`
-	Released           string         `json:"released"`
-	Released_formatted string         `json:"released_formatted"`
-	Resource_url       string         `json:"resource_url"`
-	Status             string         `json:"status"`
-	Styles             []string       `json:"styles"`
-	Tracklist          []Track        `json:"tracklist"`
-	Uri                string         `json:"uri"`
-	Videos             []Video        `json:"videos"`
-	Year               int            `json:"year"`
+	Title             string         `json:"title"`
+	ID                int            `json:"id"`
+	Artists           []ArtistSource `json:"artists"`
+	DataQuality       string         `json:"data_quality"`
+	Thumb             string         `json:"thumb"`
+	Community         Community      `json:"community"`
+	Companies         []Company      `json:"companies"`
+	Country           string         `json:"country"`
+	DateAdded         string         `json:"date_added"`
+	DateChanged       string         `json:"date_changed"`
+	EstimatedWeight   int            `json:"estimated_weight"`
+	ExtraArtists      []ArtistSource `json:"extraartists"`
+	FormatQuantity    int            `json:"format_quantity"`
+	Formats           []Format       `json:"formats"`
+	Genres            []string       `json:"genres"`
+	Identifiers       []Identifier   `json:"identifiers"`
+	Images            []Image        `json:"images"`
+	Labels            []LabelSource  `json:"labels"`
+	LowestPrice       float64        `json:"lowest_price"`
+	MasterID          int            `json:"master_id"`
+	MasterURL         string         `json:"master_url"`
+	Notes             string         `json:"notes,omitempty"`
+	NumForSale        int            `json:"numfor_sale,omitempty"`
+	Released          string         `json:"released"`
+	ReleasedFormatted string         `json:"released_formatted"`
+	ResourceURL       string         `json:"resource_url"`
+	// Series
+	Status    string   `json:"status"`
+	Styles    []string `json:"styles"`
+	Tracklist []Track  `json:"tracklist"`
+	URI       string   `json:"uri"`
+	Videos    []Video  `json:"videos"`
+	Year      int      `json:"year"`
 }
 
-func newReleaseService(api *apirequest.API) *ReleaseService {
-	return &ReleaseService{
-		api: api.Path("releases/"),
-	}
+type RequestRelease struct {
+	Curr_abbr string
 }
 
-func (self *ReleaseService) Release(params *ReleaseParams) (*Release, *http.Response, error) {
+// Release returns release by release's ID
+func (c *Client) Release(releaseID int) (*Release, error) {
 	release := new(Release)
 	apiError := new(APIError)
 
-	resp, err := self.api.New().Get(params.Release_id).Receive(release, apiError)
-	return release, resp, relevantError(err, *apiError)
+	req := &RequestRelease{Curr_abbr: c.currency}
+	_, err := c.api.New().Get("releases/"+strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
+	return release, relevantError(err, *apiError)
 }

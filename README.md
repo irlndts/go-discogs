@@ -41,7 +41,7 @@ client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "sometoken")
 
 #### Releases
 ```go
-  release, err := client.Release.Release(9893847)
+  release, err := client..Release(9893847)
   
   fmt.Println(release.Artists[0].Name, " - ", release.Title) // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```

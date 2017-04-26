@@ -9,6 +9,7 @@ type APIError struct {
 	Message string `json:"message"`
 }
 
+// Error ...
 func (e APIError) Error() string {
 	if e.Message != "" {
 		return fmt.Sprintf("discogs: %v", e.Message)

@@ -7,23 +7,17 @@ import (
 )
 
 func main() {
-	d := discogs.NewClient("TestDiscogsClient/0.0.1 +http://irlndts.moscow", "")
+	d := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +http://irlndts.moscow").Token()
 
-	request := &discogs.SearchRequest{Q: "The Swindlers - Dig Out Alive!", Page: 0, Per_page: 1}
-	search, _, err := d.Search.Search(request)
-
-	if err != nil {
+	if err := d.Currency("EUR"); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	for _, r := range search.Results {
-		fmt.Printf("%+v\n", r)
-		//fmt.Println(r.Id, r.Title)
-
-		release, _ := d.Release(r.ID)
-		fmt.Printf("%+v\n", release)
-
+	release, err := d.Release(9893847)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-
+	fmt.Printf("%+v\n", release)
 }

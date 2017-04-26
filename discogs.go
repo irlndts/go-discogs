@@ -1,6 +1,7 @@
 package discogs
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/irlndts/go-apirequest"
@@ -14,16 +15,15 @@ const (
 type Client struct {
 	api      *apirequest.API
 	currency string
-	//Release *ReleaseService
-	Master *MasterService
-	Artist *ArtistService
-	Label  *LabelService
-	Search *SearchService
+	Master   *MasterService
+	Artist   *ArtistService
+	Label    *LabelService
+	Search   *SearchService
 }
 
 // NewClient returns a new Client.
-func NewClient(useragent, token string) *Client {
-	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI).Add("User-Agent", useragent).Add("Authorization", "Discogs token="+token)
+func NewClient() *Client {
+	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI)
 	return &Client{
 		api:      base,
 		currency: "USD",
@@ -31,7 +31,6 @@ func NewClient(useragent, token string) *Client {
 		Artist: newArtistService(base.New()),
 		Label:  newLabelService(base.New()),
 		Master: newMasterService(base.New()),
-		//Release: newReleaseService(base.New()),
 		Search: newSearchService(base.New()),
 	}
 }
@@ -53,6 +52,12 @@ func (c *Client) UserAgent(useragent string) *Client {
 // Defaults to the authenticated users currency. Must be one of the following:
 // USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
 func (c *Client) Currency(currency string) error {
-	c.currency = currency
+	switch currency {
+	case "USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR":
+		c.currency = currency
+	default:
+		return fmt.Errorf("%v\n", "Invalid currency abbreviation.")
+	}
+
 	return nil
 }

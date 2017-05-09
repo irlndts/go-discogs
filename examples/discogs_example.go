@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	d := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +http://irlndts.moscow").Token("oQTQKAprakIQfWOkAxTdYyDpgUqahHtdbHTuYkIy")
+	d := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +http://irlndts.moscow") //.Token("oQTQKAprakIQfWOkAxTdYyDpgUqahHtdbHTuYkIy")
 
 	if err := d.Currency("EUR"); err != nil {
 		fmt.Println(err)

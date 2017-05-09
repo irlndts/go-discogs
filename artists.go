@@ -1,14 +1,17 @@
 package discogs
 
 import (
-	"github.com/irlndts/go-apirequest"
 	"net/http"
+
+	"github.com/irlndts/go-apirequest"
 )
 
+// ArtistService ...
 type ArtistService struct {
 	api *apirequest.API
 }
 
+// ArtistParams ...
 type ArtistParams struct {
 	Artist_id  string
 	Sort       string // year, title, format
@@ -17,6 +20,7 @@ type ArtistParams struct {
 	Per_page   int
 }
 
+// Artist ...
 type Artist struct {
 	Namevariations []string `json:"namevariations"`
 	Profile        string   `json:"profile"`
@@ -30,6 +34,7 @@ type Artist struct {
 	Members        []Member `json:"members"`
 }
 
+// ArtistReleases ...
 type ArtistReleases struct {
 	Paginastion Page            `json:"pagination"`
 	Releases    []ReleaseSource `json:"releases"`
@@ -41,6 +46,7 @@ func newArtistService(api *apirequest.API) *ArtistService {
 	}
 }
 
+// Artist ...
 func (self *ArtistService) Artist(params *ArtistParams) (*Artist, *http.Response, error) {
 	artist := new(Artist)
 	apiError := new(APIError)
@@ -49,6 +55,7 @@ func (self *ArtistService) Artist(params *ArtistParams) (*Artist, *http.Response
 	return artist, resp, relevantError(err, *apiError)
 }
 
+// Releases ...
 func (self *ArtistService) Releases(params *ArtistParams) (*ArtistReleases, *http.Response, error) {
 	releases := new(ArtistReleases)
 	apiError := new(APIError)

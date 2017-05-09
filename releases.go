@@ -28,7 +28,7 @@ type Release struct {
 	MasterID          int            `json:"master_id"`
 	MasterURL         string         `json:"master_url"`
 	Notes             string         `json:"notes,omitempty"`
-	NumForSale        int            `json:"numfor_sale,omitempty"`
+	NumForSale        int            `json:"num_for_sale,omitempty"`
 	Released          string         `json:"released"`
 	ReleasedFormatted string         `json:"released_formatted"`
 	ResourceURL       string         `json:"resource_url"`

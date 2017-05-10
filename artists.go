@@ -34,11 +34,7 @@ type Artist struct {
 	Members        []Member `json:"members"`
 }
 
-<<<<<<< HEAD
 // ArtistReleases ...
-=======
-// Artistreleases ...
->>>>>>> efff71f46e36d0fd1868f4abe3efd8c82e32386f
 type ArtistReleases struct {
 	Paginastion Page            `json:"pagination"`
 	Releases    []ReleaseSource `json:"releases"`

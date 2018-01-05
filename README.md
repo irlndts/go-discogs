@@ -2,13 +2,6 @@
 
 go-discogs is a Go client library for the [Discogs API](https://www.discogs.com/developers/). Check the usage section to see how to access the Discogs API.
 
-### Changelog
-```
-14.02.2017 
-- search is implemented
-- minor improvements
-```
-
 ### Feauteres
  * Database
   * [Releases](#releases)
@@ -22,7 +15,7 @@ go-discogs is a Go client library for the [Discogs API](https://www.discogs.com/
  
 Install
 --------
-    go get github.com/irlndts/go-discogs
+    go get -u github.com/irlndts/go-discogs
 
 Usage
 ---------
@@ -34,7 +27,8 @@ import "github.com/irlndts/go-discogs"
 ```go
 client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "")
 ``` 
-Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a token parameter. Key-secret doesn't implemented yet, but token is yes.
+Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a token parameter.
+This is token way example:
 ```go
 client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "sometoken")
 ``` 

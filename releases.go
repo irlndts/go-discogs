@@ -41,8 +41,8 @@ type Release struct {
 	Year      int      `json:"year"`
 }
 
-type RequestRelease struct {
-	Curr_abbr string
+type ReqRelease struct {
+	CurrAbbr string
 }
 
 // Release returns release by release's ID
@@ -50,7 +50,7 @@ func (c *Client) Release(releaseID int) (*Release, error) {
 	release := new(Release)
 	apiError := new(APIError)
 
-	req := &RequestRelease{Curr_abbr: c.currency}
+	req := &ReqRelease{CurrAbbr: c.currency}
 	_, err := c.api.New().Get("releases/"+strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
 	return release, relevantError(err, *apiError)
 }

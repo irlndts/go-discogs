@@ -23,44 +23,36 @@ The discogs package provides a client for accessing the Discogs API.
 First of all import library and init client variable. According to discogs api documentation you [must provide your user-agent](https://www.discogs.com/developers/#page:home,header:home-general-information). 
 ```go
 import "github.com/irlndts/go-discogs"
+
+...
+client := discogs.NewClient()
 ```
 ```go
-client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "")
+client.UserAgent("TestDiscogsClient/0.0.1 +example.com")
 ``` 
-Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a token parameter.
+Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
 This is token way example:
 ```go
-client := discogs.NewClient("TestDiscogsClient/0.0.1 +example.com", "sometoken")
+client.Token("sometoken")
 ``` 
+
+Don't forget to set required currency ("USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed):
+```go
+err := client.Currency("EUR");
+```
 
 #### Releases
 ```go
-  release, err := client..Release(9893847)
-  
-  fmt.Println(release.Artists[0].Name, " - ", release.Title) // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
-```
-
-#### Artists
-```go
-  params := &discogs.LabelParams{Label_id: "890477", Page: 2, Per_page: 3}
-  label, _, err := client.Label.Releases(params)
-
-  for _, release := range label.Releases {
-    fmt.Println(release.Title)
-  }
-
-  /*
-    Someday / I Hate Everything About You
-    Spy Potion
-    Surf Attack From Russia
-  */
+  release, err := client.Release(9893847)
+  fmt.Println(release.Artists[0].Name, " - ", release.Title) 
+  // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```
 
 #### Search
 Issue a search query to discogs database. This endpoint accepts pagination parameters
 Authentication (as any user) is required.
 
-Use `SearchRequest` struc to create a request
+Use `SearchRequest` struct to create a request
 ```go
 type SearchRequest struct {
     Q             string // search query (optional)
@@ -98,4 +90,3 @@ Example
 ```
 
 etc. 
-More examples - soon

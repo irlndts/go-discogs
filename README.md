@@ -23,17 +23,12 @@ The discogs package provides a client for accessing the Discogs API.
 First of all import library and init client variable. According to discogs api documentation you [must provide your user-agent](https://www.discogs.com/developers/#page:home,header:home-general-information). 
 ```go
 import "github.com/irlndts/go-discogs"
-
-...
-client := discogs.NewClient()
 ```
-```go
-client.UserAgent("TestDiscogsClient/0.0.1 +example.com")
-``` 
+
 Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
 This is token way example:
 ```go
-client.Token("sometoken")
+client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com").Token("Some Token")
 ``` 
 
 Don't forget to set required currency ("USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed):

@@ -14,14 +14,11 @@ const (
 type Options struct {
 	Currency  string
 	UserAgent string
+	Token     string
 }
 
 // Client is a Discogs client for making Discogs API requests.
 type Client struct {
-	api      *apirequest.API
-	currency string
-
-	// services
 	Release *ReleaseService
 	Master  *MasterService
 	Artist  *ArtistService
@@ -41,21 +38,18 @@ func NewClient(o *Options) (*Client, error) {
 		return nil, err
 	}
 
-	return &Client{
-		api: base,
+	// set token, it's required for some queries like search
+	if o.Token != "" {
+		base.Set("Authorization", "Discogs token="+o.Token)
+	}
 
+	return &Client{
 		Release: newReleaseService(base.New(), cur),
 		Artist:  newArtistService(base.New()),
 		Label:   newLabelService(base.New()),
 		Master:  newMasterService(base.New()),
 		Search:  newSearchService(base.New()),
 	}, nil
-}
-
-// Token sets tokens, it's required for some queries like search
-func (c *Client) Token(token string) *Client {
-	c.api.Set("Authorization", "Discogs token="+token)
-	return c
 }
 
 // currency validates currency for marketplace data.

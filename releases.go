@@ -51,12 +51,14 @@ type ReqRelease struct {
 
 // ReleaseService ...
 type ReleaseService struct {
+	url      string
 	header   *http.Header
 	currency string
 }
 
-func newReleaseService(header *http.Header, currency string) *ReleaseService {
+func newReleaseService(url string, header *http.Header, currency string) *ReleaseService {
 	return &ReleaseService{
+		url:      url,
 		header:   header,
 		currency: currency,
 	}
@@ -76,7 +78,7 @@ func (s *ReleaseService) Release(releaseID int) (*Release, error) {
 }
 
 func (s *ReleaseService) request(path string, params url.Values, resp interface{}) error {
-	r, err := http.NewRequest("GET", discogsAPI+"releases/"+path+"?"+params.Encode(), nil)
+	r, err := http.NewRequest("GET", s.url+path+"?"+params.Encode(), nil)
 	if err != nil {
 		return err
 	}

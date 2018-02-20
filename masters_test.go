@@ -8,7 +8,7 @@ import (
 func TestMasterService_Master(t *testing.T) {
 	expectedTitle := "Elephant Riddim"
 
-	d := NewClient(testUserAgent, testToken)
+	d, _ := NewClient(nil)
 	master, _, err := d.Master.Master(&MasterParams{Master_id: "960657"})
 
 	check(t, err)
@@ -18,7 +18,7 @@ func TestMasterService_Master(t *testing.T) {
 func TestMasterService_Versions(t *testing.T) {
 	expectedTitle := "Stardiver"
 
-	d := NewClient(testUserAgent, testToken)
+	d, _ := NewClient(nil)
 	versions, _, err := d.Master.Versions(&MasterVersionParams{Master_id: "1000", Page: 1, Per_page: 1})
 
 	check(t, err)

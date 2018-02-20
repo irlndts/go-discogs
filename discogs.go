@@ -12,6 +12,7 @@ const (
 )
 
 type Options struct {
+	URL       string
 	Currency  string
 	UserAgent string
 	Token     string
@@ -47,7 +48,7 @@ func NewClient(o *Options) (*Client, error) {
 	}
 
 	return &Client{
-		Release: newReleaseService(header, cur),
+		Release: newReleaseService(o.URL+"/releases/", header, cur),
 		Artist:  newArtistService(base.New()),
 		Label:   newLabelService(base.New()),
 		Master:  newMasterService(base.New()),
@@ -62,8 +63,9 @@ func currency(c string) (string, error) {
 	switch c {
 	case "USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR":
 		return c, nil
+	case "":
+		return "USD", nil
 	default:
 		return "", fmt.Errorf("%v\n", "Invalid currency abbreviation.")
 	}
-	return "USD", nil
 }

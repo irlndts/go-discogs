@@ -10,6 +10,7 @@ func main() {
 	d, err := discogs.NewClient(&discogs.Options{
 		UserAgent: "TestDiscogsClient/0.0.1 +http://example.com",
 		Currency:  "EUR",
+		Token:     "",
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -21,5 +22,5 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("%+v\n", release)
+	fmt.Printf("%+v\n", release.Title)
 }

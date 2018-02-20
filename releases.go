@@ -1,9 +1,11 @@
 package discogs
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strconv"
-
-	apirequest "github.com/irlndts/go-apirequest"
 )
 
 // Release serves relesase response from discogs
@@ -49,23 +51,51 @@ type ReqRelease struct {
 
 // ReleaseService ...
 type ReleaseService struct {
-	api      *apirequest.API
+	header   *http.Header
 	currency string
 }
 
-func newReleaseService(api *apirequest.API, currency string) *ReleaseService {
+func newReleaseService(header *http.Header, currency string) *ReleaseService {
 	return &ReleaseService{
-		api:      api.Path("releases/"),
+		header:   header,
 		currency: currency,
 	}
 }
 
 // Release returns release by release's ID
 func (s *ReleaseService) Release(releaseID int) (*Release, error) {
-	release := new(Release)
-	apiError := new(APIError)
+	params := url.Values{}
+	params.Set("CurrAbbr", s.currency)
 
-	req := &ReqRelease{CurrAbbr: s.currency}
-	_, err := s.api.New().Get(strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
-	return release, relevantError(err, *apiError)
+	var release *Release
+	if err := s.request(strconv.Itoa(releaseID), params, &release); err != nil {
+		return nil, err
+	}
+
+	return release, nil
+}
+
+func (s *ReleaseService) request(path string, params url.Values, resp interface{}) error {
+	r, err := http.NewRequest("GET", discogsAPI+"releases/"+path+"?"+params.Encode(), nil)
+	if err != nil {
+		return err
+	}
+	r.Header = *s.header
+
+	client := &http.Client{}
+	response, err := client.Do(r)
+	if err != nil {
+		return err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+
+	if err = json.Unmarshal(body, &resp); err != nil {
+		return err
+	}
+
+	return nil
 }

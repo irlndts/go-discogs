@@ -28,9 +28,11 @@ type Client struct {
 
 // NewClient returns a new Client.
 func NewClient(o *Options) (*Client, error) {
+	header := &http.Header{}
 	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI)
 	if o.UserAgent != "" {
 		base.Set("User-Agent", o.UserAgent)
+		header.Add("User-Agent", o.UserAgent)
 	}
 
 	cur, err := currency(o.Currency)
@@ -41,10 +43,11 @@ func NewClient(o *Options) (*Client, error) {
 	// set token, it's required for some queries like search
 	if o.Token != "" {
 		base.Set("Authorization", "Discogs token="+o.Token)
+		header.Add("Authorization", "Discogs token="+o.Token)
 	}
 
 	return &Client{
-		Release: newReleaseService(base.New(), cur),
+		Release: newReleaseService(header, cur),
 		Artist:  newArtistService(base.New()),
 		Label:   newLabelService(base.New()),
 		Master:  newMasterService(base.New()),

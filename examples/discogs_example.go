@@ -7,13 +7,16 @@ import (
 )
 
 func main() {
-	d := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +http://example.com")
-	if err := d.Currency("EUR"); err != nil {
+	d, err := discogs.NewClient(&discogs.Options{
+		UserAgent: "TestDiscogsClient/0.0.1 +http://example.com",
+		Currency:  "EUR",
+	})
+	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	release, err := d.Release(9893847)
+	release, err := d.Release.Release(9893847)
 	if err != nil {
 		fmt.Println(err)
 		return

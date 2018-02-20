@@ -2,6 +2,8 @@ package discogs
 
 import (
 	"strconv"
+
+	apirequest "github.com/irlndts/go-apirequest"
 )
 
 // Release serves relesase response from discogs
@@ -45,12 +47,25 @@ type ReqRelease struct {
 	CurrAbbr string
 }
 
+// ReleaseService ...
+type ReleaseService struct {
+	api      *apirequest.API
+	currency string
+}
+
+func newReleaseService(api *apirequest.API, currency string) *ReleaseService {
+	return &ReleaseService{
+		api:      api.Path("releases/"),
+		currency: currency,
+	}
+}
+
 // Release returns release by release's ID
-func (c *Client) Release(releaseID int) (*Release, error) {
+func (s *ReleaseService) Release(releaseID int) (*Release, error) {
 	release := new(Release)
 	apiError := new(APIError)
 
-	req := &ReqRelease{CurrAbbr: c.currency}
-	_, err := c.api.New().Get("releases/"+strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
+	req := &ReqRelease{CurrAbbr: s.currency}
+	_, err := s.api.New().Get(strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
 	return release, relevantError(err, *apiError)
 }

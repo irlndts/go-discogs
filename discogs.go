@@ -11,28 +11,45 @@ const (
 	discogsAPI = "https://api.discogs.com/"
 )
 
+type Options struct {
+	Currency  string
+	UserAgent string
+}
+
 // Client is a Discogs client for making Discogs API requests.
 type Client struct {
 	api      *apirequest.API
 	currency string
-	Master   *MasterService
-	Artist   *ArtistService
-	Label    *LabelService
-	Search   *SearchService
+
+	// services
+	Release *ReleaseService
+	Master  *MasterService
+	Artist  *ArtistService
+	Label   *LabelService
+	Search  *SearchService
 }
 
 // NewClient returns a new Client.
-func NewClient() *Client {
+func NewClient(o *Options) (*Client, error) {
 	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI)
-	return &Client{
-		api:      base,
-		currency: "USD",
-
-		Artist: newArtistService(base.New()),
-		Label:  newLabelService(base.New()),
-		Master: newMasterService(base.New()),
-		Search: newSearchService(base.New()),
+	if o.UserAgent != "" {
+		base.Set("User-Agent", o.UserAgent)
 	}
+
+	cur, err := currency(o.Currency)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Client{
+		api: base,
+
+		Release: newReleaseService(base.New(), cur),
+		Artist:  newArtistService(base.New()),
+		Label:   newLabelService(base.New()),
+		Master:  newMasterService(base.New()),
+		Search:  newSearchService(base.New()),
+	}, nil
 }
 
 // Token sets tokens, it's required for some queries like search
@@ -41,23 +58,15 @@ func (c *Client) Token(token string) *Client {
 	return c
 }
 
-// UserAgent sets specified user agent
-// Discogs requires it
-func (c *Client) UserAgent(useragent string) *Client {
-	c.api.Set("User-Agent", useragent)
-	return c
-}
-
-// SetCurrency determines currency for marketplace data.
+// currency validates currency for marketplace data.
 // Defaults to the authenticated users currency. Must be one of the following:
 // USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
-func (c *Client) Currency(currency string) error {
-	switch currency {
+func currency(c string) (string, error) {
+	switch c {
 	case "USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR":
-		c.currency = currency
+		return c, nil
 	default:
-		return fmt.Errorf("%v\n", "Invalid currency abbreviation.")
+		return "", fmt.Errorf("%v\n", "Invalid currency abbreviation.")
 	}
-
-	return nil
+	return "USD", nil
 }

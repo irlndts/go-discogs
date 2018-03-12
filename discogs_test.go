@@ -9,23 +9,12 @@ const (
 	testToken     = ""
 )
 
-func check(t *testing.T, e error) {
-	if e != nil {
-		t.Error(e)
-	}
-}
-
-func assert(t *testing.T, condition bool, assertion string) {
-	if !condition {
-		t.Errorf("Assertion failed: %v", assertion)
-	}
-}
-
 func initDiscogsClient(t *testing.T, options *Options) *Client {
 	if options == nil {
 		options = &Options{
 			UserAgent: testUserAgent,
 			Currency:  "USD",
+			Token:     testToken,
 		}
 	}
 

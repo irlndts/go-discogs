@@ -27,12 +27,6 @@ type Artist struct {
 	Members        []Member `json:"members"`
 }
 
-// ArtistReleases ...
-type ArtistReleases struct {
-	Pagination Page            `json:"pagination"`
-	Releases   []ReleaseSource `json:"releases"`
-}
-
 // Artist represents a person in the discogs database
 func (s *ArtistService) Artist(artistID int) (*Artist, error) {
 	var artist *Artist
@@ -40,6 +34,12 @@ func (s *ArtistService) Artist(artistID int) (*Artist, error) {
 		return nil, err
 	}
 	return artist, nil
+}
+
+// ArtistReleases ...
+type ArtistReleases struct {
+	Pagination Page            `json:"pagination"`
+	Releases   []ReleaseSource `json:"releases"`
 }
 
 // Releases returns a list of releases and masters associated with the artist.

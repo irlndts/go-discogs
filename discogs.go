@@ -63,7 +63,7 @@ func NewClient(o *Options) (*Client, error) {
 		Release: newReleaseService(o.URL+"/releases/", cur),
 		Artist:  newArtistService(o.URL + "/artists/"),
 		Label:   newLabelService(base.New()),
-		Master:  newMasterService(base.New()),
+		Master:  newMasterService(o.URL + "/masters/"),
 		Search:  newSearchService(base.New()),
 	}, nil
 }
@@ -100,7 +100,6 @@ func request(path string, params url.Values, resp interface{}) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(body))
 
 	return json.Unmarshal(body, &resp)
 }

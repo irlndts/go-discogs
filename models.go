@@ -1,5 +1,10 @@
 package discogs
 
+import (
+	"net/url"
+	"strconv"
+)
+
 type Video struct {
 	Description string `json:"description"`
 	Duration    int    `json:"duration"`
@@ -140,4 +145,34 @@ type ReleaseSource struct {
 	Main_release int    `json:"main_release"`
 	Role         string `json:"role"`
 	Type         string `json:"type"`
+}
+
+// Pagination ...
+type Pagination struct {
+	Sort      string // year, title, format
+	SortOrder string // asc, desc
+	Page      int
+	PerPage   int
+}
+
+// toParams converts pagaination params to request values
+func (p *Pagination) toParams() url.Values {
+	if p == nil {
+		return nil
+	}
+
+	params := url.Values{}
+	if p.Sort != "" {
+		params.Set("sort", p.Sort)
+	}
+	if p.SortOrder != "" {
+		params.Set("sort_order", p.SortOrder)
+	}
+	if p.Page != 0 {
+		params.Set("page", strconv.Itoa(p.Page))
+	}
+	if p.PerPage != 0 {
+		params.Set("per_page", strconv.Itoa(p.PerPage))
+	}
+	return params
 }

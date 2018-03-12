@@ -1,23 +1,16 @@
 package discogs
 
-import (
-	"net/http"
-
-	"github.com/irlndts/go-apirequest"
-)
+import "strconv"
 
 // ArtistService ...
 type ArtistService struct {
-	api *apirequest.API
+	url string
 }
 
-// ArtistParams ...
-type ArtistParams struct {
-	Artist_id  string
-	Sort       string // year, title, format
-	Sort_order string // asc, desc
-	Page       int
-	Per_page   int
+func newArtistService(url string) *ArtistService {
+	return &ArtistService{
+		url: url,
+	}
 }
 
 // Artist ...
@@ -36,30 +29,24 @@ type Artist struct {
 
 // ArtistReleases ...
 type ArtistReleases struct {
-	Paginastion Page            `json:"pagination"`
-	Releases    []ReleaseSource `json:"releases"`
+	Pagination Page            `json:"pagination"`
+	Releases   []ReleaseSource `json:"releases"`
 }
 
-func newArtistService(api *apirequest.API) *ArtistService {
-	return &ArtistService{
-		api: api.Path("artists/"),
+// Artist represents a person in the discogs database
+func (s *ArtistService) Artist(artistID int) (*Artist, error) {
+	var artist *Artist
+	if err := request(s.url+strconv.Itoa(artistID), nil, &artist); err != nil {
+		return nil, err
 	}
+	return artist, nil
 }
 
-// Artist ...
-func (self *ArtistService) Artist(params *ArtistParams) (*Artist, *http.Response, error) {
-	artist := new(Artist)
-	apiError := new(APIError)
-
-	resp, err := self.api.New().Get(params.Artist_id).Receive(artist, apiError)
-	return artist, resp, relevantError(err, *apiError)
-}
-
-// Releases ...
-func (self *ArtistService) Releases(params *ArtistParams) (*ArtistReleases, *http.Response, error) {
-	releases := new(ArtistReleases)
-	apiError := new(APIError)
-
-	resp, err := self.api.New().Get(params.Artist_id+"/releases").QueryStruct(params).Receive(releases, apiError)
-	return releases, resp, relevantError(err, *apiError)
+// Releases returns a list of releases and masters associated with the artist.
+func (s *ArtistService) Releases(artistID int, pagination *Pagination) (*ArtistReleases, error) {
+	var releases *ArtistReleases
+	if err := request(s.url+strconv.Itoa(artistID)+"/releases", pagination.toParams(), &releases); err != nil {
+		return nil, err
+	}
+	return releases, nil
 }

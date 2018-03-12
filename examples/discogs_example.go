@@ -17,7 +17,7 @@ func main() {
 		return
 	}
 
-	release, err := d.Release.Rating(9893847)
+	release, err := d.Artist.Releases(168101, nil)
 	if err != nil {
 		fmt.Println(err)
 		return

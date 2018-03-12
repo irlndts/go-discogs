@@ -1,58 +1,56 @@
 package discogs
 
 import (
-	"net/http"
-
-	"github.com/irlndts/go-apirequest"
+	"strconv"
 )
 
+// LabelService ...
 type LabelService struct {
-	api *apirequest.API
+	url string
 }
 
-type LabelParams struct {
-	Label_id string
-	Page     int
-	Per_Page int
+func newLabelService(url string) *LabelService {
+	return &LabelService{
+		url: url,
+	}
 }
 
+// Label resource represents a label, company, recording studio, location,
+// or other entity involved with artists and releases.
 type Label struct {
-	Profile      string     `json:"profile"`
-	Releases_url string     `json:"releases_url"`
-	Name         string     `json:"name"`
-	Contact_info string     `json:"contact_info"`
-	Uri          string     `json:"uri"`
-	Sublabels    []Sublable `json:"sublabels"`
-	Urls         []string   `json:"urls"`
-	Images       []Image    `json:"images"`
-	Resource_url string     `json:"resource_url"`
-	Id           int        `json:"id"`
-	Data_quality string     `json:"data_quality"`
+	Profile     string     `json:"profile"`
+	ReleasesURL string     `json:"releases_url"`
+	Name        string     `json:"name"`
+	ContactInfo string     `json:"contact_info"`
+	URI         string     `json:"uri"`
+	Sublabels   []Sublable `json:"sublabels"`
+	URLs        []string   `json:"urls"`
+	Images      []Image    `json:"images"`
+	ResourceURL string     `json:"resource_url"`
+	ID          int        `json:"id"`
+	DataQuality string     `json:"data_quality"`
 }
 
+// Label returns a label.
+func (s *LabelService) Label(labelID int) (*Label, error) {
+	var label *Label
+	if err := request(s.url+strconv.Itoa(labelID), nil, &label); err != nil {
+		return nil, err
+	}
+	return label, nil
+}
+
+// LabelReleases is a list of Releases associated with the label.
 type LabelReleases struct {
 	Pagination Page            `json:"pagination"`
 	Releases   []ReleaseSource `json:"releases"`
 }
 
-func newLabelService(api *apirequest.API) *LabelService {
-	return &LabelService{
-		api: api.Path("labels/"),
+// Releases returns a list of Releases associated with the label.
+func (s *LabelService) Releases(labelID int, pagination *Pagination) (*LabelReleases, error) {
+	var releases *LabelReleases
+	if err := request(s.url+strconv.Itoa(labelID)+"/releases", pagination.toParams(), &releases); err != nil {
+		return nil, err
 	}
-}
-
-func (self *LabelService) Label(params *LabelParams) (*Label, *http.Response, error) {
-	label := new(Label)
-	apiError := new(APIError)
-
-	resp, err := self.api.New().Get(params.Label_id).Receive(label, apiError)
-	return label, resp, relevantError(err, *apiError)
-}
-
-func (self *LabelService) Releases(params *LabelParams) (*LabelReleases, *http.Response, error) {
-	releases := new(LabelReleases)
-	apiError := new(APIError)
-
-	resp, err := self.api.New().Get(params.Label_id+"/releases").QueryStruct(params).Receive(releases, apiError)
-	return releases, resp, relevantError(err, *apiError)
+	return releases, nil
 }

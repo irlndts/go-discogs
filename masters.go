@@ -1,24 +1,21 @@
 package discogs
 
 import (
-	"github.com/irlndts/go-apirequest"
-	"net/http"
+	"strconv"
 )
 
 type MasterService struct {
-	api *apirequest.API
+	url string
 }
 
-type MasterParams struct {
-	Master_id string
+func newMasterService(url string) *MasterService {
+	return &MasterService{
+		url: url,
+	}
 }
 
-type MasterVersionParams struct {
-	Master_id string
-	Page      int
-	Per_page  int
-}
-
+// Master resource represents a set of similar releases.
+// Masters (also known as `master releases`) have a `main release` which is often the chronologically earliest.
 type Master struct {
 	Styles           []string `json:"styles"`
 	Genres           []string `json:"genres"`
@@ -37,27 +34,26 @@ type Master struct {
 	Data_quality     string   `json:"data_quality"`
 }
 
+// Master returns a master release
+func (s *MasterService) Master(masterID int) (*Master, error) {
+	var master *Master
+	if err := request(s.url+strconv.Itoa(masterID), nil, &master); err != nil {
+		return nil, err
+	}
+	return master, nil
+}
+
+// MasterVersions retrieves a list of all releases that are versions of this master.
 type MasterVersions struct {
 	Pagination Page      `json:"pagination"`
 	Versions   []Version `json:"versions"`
 }
 
-func newMasterService(api *apirequest.API) *MasterService {
-	return &MasterService{
-		api: api.Path("masters/"),
+// Versions retrieves a list of all Releases that are versions of this master
+func (s *MasterService) Versions(masterID int, pagination *Pagination) (*MasterVersions, error) {
+	var versions *MasterVersions
+	if err := request(s.url+strconv.Itoa(masterID)+"/versions", pagination.toParams(), &versions); err != nil {
+		return nil, err
 	}
-}
-
-func (self *MasterService) Master(params *MasterParams) (*Master, *http.Response, error) {
-	master := new(Master)
-	apiError := new(APIError)
-	resp, err := self.api.New().Get(params.Master_id).Receive(master, apiError)
-	return master, resp, relevantError(err, *apiError)
-}
-
-func (self *MasterService) Versions(params *MasterVersionParams) (*MasterVersions, *http.Response, error) {
-	versions := new(MasterVersions)
-	apiError := new(APIError)
-	resp, err := self.api.New().Get(params.Master_id+"/versions").QueryStruct(params).Receive(versions, apiError)
-	return versions, resp, relevantError(err, *apiError)
+	return versions, nil
 }

@@ -17,7 +17,7 @@ func main() {
 		return
 	}
 
-	release, err := d.Artist.Releases(168101, nil)
+	release, err := d.Master.Versions(1147170, nil)
 	if err != nil {
 		fmt.Println(err)
 		return

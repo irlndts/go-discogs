@@ -28,17 +28,17 @@ import "github.com/irlndts/go-discogs"
 Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
 This is token way example:
 ```go
-client := discogs.NewClient().UserAgent("TestDiscogsClient/0.0.1 +example.com").Token("Some Token")
+client, err := discogs.NewClient(&discogs.Options{
+        UserAgent: "Some Name",
+        Currency:  "EUR", // optional, "USD" (default), "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed
+        Token:     "Some Token", // optional
+        URL:       "https://api.discogs.com",
+    })
 ``` 
-
-Don't forget to set required currency ("USD", "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed):
-```go
-err := client.Currency("EUR");
-```
 
 #### Releases
 ```go
-  release, err := client.Release(9893847)
+  release, err := client.Release.Release(9893847)
   fmt.Println(release.Artists[0].Name, " - ", release.Title) 
   // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```

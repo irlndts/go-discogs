@@ -1,8 +1,27 @@
 package discogs
 
 import (
+	"net/url"
 	"strconv"
 )
+
+// ReleaseService ...
+type ReleaseService struct {
+	url      string
+	currency string
+}
+
+func newReleaseService(url string, currency string) *ReleaseService {
+	return &ReleaseService{
+		url:      url,
+		currency: currency,
+	}
+}
+
+// ReqRelease serves release request
+type ReqRelease struct {
+	CurrAbbr string
+}
 
 // Release serves relesase response from discogs
 type Release struct {
@@ -41,16 +60,31 @@ type Release struct {
 	Year      int      `json:"year"`
 }
 
-type ReqRelease struct {
-	CurrAbbr string
+// Release returns release by release's ID
+func (s *ReleaseService) Release(releaseID int) (*Release, error) {
+	params := url.Values{}
+	params.Set("CurrAbbr", s.currency)
+
+	var release *Release
+	if err := request(s.url+strconv.Itoa(releaseID), params, &release); err != nil {
+		return nil, err
+	}
+
+	return release, nil
 }
 
-// Release returns release by release's ID
-func (c *Client) Release(releaseID int) (*Release, error) {
-	release := new(Release)
-	apiError := new(APIError)
+// ReleaseRating serves response for community release rating request
+type ReleaseRating struct {
+	ID     int    `json:"release_id"`
+	Rating Rating `json:"rating"`
+}
 
-	req := &ReqRelease{CurrAbbr: c.currency}
-	_, err := c.api.New().Get("releases/"+strconv.Itoa(releaseID)).QueryStruct(req).Receive(release, apiError)
-	return release, relevantError(err, *apiError)
+// Ratings retruns community release rating
+func (s *ReleaseService) Rating(releaseID int) (*ReleaseRating, error) {
+	var rating *ReleaseRating
+	if err := request(s.url+strconv.Itoa(releaseID)+"/rating", nil, &rating); err != nil {
+		return nil, err
+	}
+
+	return rating, nil
 }

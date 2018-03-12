@@ -17,10 +17,10 @@ func main() {
 		return
 	}
 
-	release, err := d.Release.Release(9893847)
+	release, err := d.Release.Rating(9893847)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("%+v\n", release.Title)
+	fmt.Printf("%+v\n", release)
 }

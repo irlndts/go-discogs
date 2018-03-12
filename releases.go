@@ -5,6 +5,24 @@ import (
 	"strconv"
 )
 
+// ReleaseService ...
+type ReleaseService struct {
+	url      string
+	currency string
+}
+
+func newReleaseService(url string, currency string) *ReleaseService {
+	return &ReleaseService{
+		url:      url,
+		currency: currency,
+	}
+}
+
+// ReqRelease serves release request
+type ReqRelease struct {
+	CurrAbbr string
+}
+
 // Release serves relesase response from discogs
 type Release struct {
 	Title             string         `json:"title"`
@@ -42,23 +60,6 @@ type Release struct {
 	Year      int      `json:"year"`
 }
 
-type ReqRelease struct {
-	CurrAbbr string
-}
-
-// ReleaseService ...
-type ReleaseService struct {
-	url      string
-	currency string
-}
-
-func newReleaseService(url string, currency string) *ReleaseService {
-	return &ReleaseService{
-		url:      url,
-		currency: currency,
-	}
-}
-
 // Release returns release by release's ID
 func (s *ReleaseService) Release(releaseID int) (*Release, error) {
 	params := url.Values{}
@@ -70,4 +71,20 @@ func (s *ReleaseService) Release(releaseID int) (*Release, error) {
 	}
 
 	return release, nil
+}
+
+// ReleaseRating serves response for community release rating request
+type ReleaseRating struct {
+	ID     int    `json:"release_id"`
+	Rating Rating `json:"rating"`
+}
+
+// Ratings retruns community release rating
+func (s *ReleaseService) Rating(releaseID int) (*ReleaseRating, error) {
+	var rating *ReleaseRating
+	if err := request(s.url+strconv.Itoa(releaseID)+"/rating", nil, &rating); err != nil {
+		return nil, err
+	}
+
+	return rating, nil
 }

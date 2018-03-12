@@ -1,17 +1,19 @@
 package discogs
 
-import (
-	"net/http"
-
-	"github.com/irlndts/go-apirequest"
-)
+import "net/url"
 
 // SearchService ...
 type SearchService struct {
-	api *apirequest.API
+	url string
 }
 
-// SerachRequest describes search request json
+func newSearchService(url string) *SearchService {
+	return &SearchService{
+		url: url,
+	}
+}
+
+// SerachRequest describes search request
 type SearchRequest struct {
 	Q             string // search query (optional)
 	Type          string // one of release, master, artist, label (optional)
@@ -32,8 +34,8 @@ type SearchRequest struct {
 	Submitter     string // search submitter username (optional)
 	Contributer   string // search contributor usernames (optional)
 
-	Page     int // optional
-	Per_page int // optional
+	Page    int // optional
+	PerPage int // optional
 }
 
 // Search describes search response
@@ -60,20 +62,14 @@ type Result struct {
 	ID          int       `json:"id,omitempty"`
 }
 
-func newSearchService(api *apirequest.API) *SearchService {
-	return &SearchService{
-		api: api.Path("database/search"),
-	}
-}
-
 // Search makes search request to discogs.
 // Issue a search query to our database. This endpoint accepts pagination parameters.
 // Authentication (as any user) is required.
 // https://www.discogs.com/developers/#page:database,header:database-search
-func (self *SearchService) Search(params *SearchRequest) (*Search, *http.Response, error) {
-	search := new(Search)
-	apiError := new(APIError)
-
-	resp, err := self.api.New().QueryStruct(params).Receive(search, apiError)
-	return search, resp, relevantError(err, *apiError)
+func (s *SearchService) Search(params url.Values) (*Search, error) {
+	var search *Search
+	if err := request(s.url, params, &search); err != nil {
+		return nil, err
+	}
+	return search, nil
 }

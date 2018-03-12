@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/irlndts/go-discogs"
 )
@@ -17,7 +18,9 @@ func main() {
 		return
 	}
 
-	release, err := d.Master.Versions(1147170, nil)
+	params := url.Values{}
+	params.Set("q", "Ska-Jazz Review")
+	release, err := d.Search.Search(params)
 	if err != nil {
 		fmt.Println(err)
 		return

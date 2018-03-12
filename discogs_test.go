@@ -20,3 +20,23 @@ func assert(t *testing.T, condition bool, assertion string) {
 		t.Errorf("Assertion failed: %v", assertion)
 	}
 }
+
+func initDiscogsClient(t *testing.T, options *Options) *Client {
+	if options == nil {
+		options = &Options{
+			UserAgent: testUserAgent,
+			Currency:  "USD",
+		}
+	}
+
+	if options.UserAgent == "" {
+		options.UserAgent = testUserAgent
+	}
+
+	client, err := NewClient(options)
+	if err != nil {
+		t.Fatalf("failed to create client: %s", err)
+	}
+
+	return client
+}

@@ -1,8 +1,11 @@
 package discogs
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/irlndts/go-apirequest"
 )
@@ -27,14 +30,19 @@ type Client struct {
 	Search  *SearchService
 }
 
+var header *http.Header
+
 // NewClient returns a new Client.
 func NewClient(o *Options) (*Client, error) {
-	header := &http.Header{}
+	header = &http.Header{}
 	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI)
-	if o.UserAgent != "" {
-		base.Set("User-Agent", o.UserAgent)
-		header.Add("User-Agent", o.UserAgent)
+
+	if o == nil || o.UserAgent == "" {
+		return nil, fmt.Errorf("failed to set user-agent")
 	}
+
+	base.Set("User-Agent", o.UserAgent)
+	header.Add("User-Agent", o.UserAgent)
 
 	cur, err := currency(o.Currency)
 	if err != nil {
@@ -47,8 +55,12 @@ func NewClient(o *Options) (*Client, error) {
 		header.Add("Authorization", "Discogs token="+o.Token)
 	}
 
+	if o.URL == "" {
+		o.URL = discogsAPI
+	}
+
 	return &Client{
-		Release: newReleaseService(o.URL+"/releases/", header, cur),
+		Release: newReleaseService(o.URL+"/releases/", cur),
 		Artist:  newArtistService(base.New()),
 		Label:   newLabelService(base.New()),
 		Master:  newMasterService(base.New()),
@@ -68,4 +80,25 @@ func currency(c string) (string, error) {
 	default:
 		return "", fmt.Errorf("%v\n", "Invalid currency abbreviation.")
 	}
+}
+
+func request(path string, params url.Values, resp interface{}) error {
+	r, err := http.NewRequest("GET", path+"?"+params.Encode(), nil)
+	if err != nil {
+		return err
+	}
+	r.Header = *header
+
+	client := &http.Client{}
+	response, err := client.Do(r)
+	if err != nil {
+		return err
+	}
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(body, &resp)
 }

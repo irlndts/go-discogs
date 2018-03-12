@@ -1,9 +1,6 @@
 package discogs
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"net/http"
 	"net/url"
 	"strconv"
 )
@@ -52,14 +49,12 @@ type ReqRelease struct {
 // ReleaseService ...
 type ReleaseService struct {
 	url      string
-	header   *http.Header
 	currency string
 }
 
-func newReleaseService(url string, header *http.Header, currency string) *ReleaseService {
+func newReleaseService(url string, currency string) *ReleaseService {
 	return &ReleaseService{
 		url:      url,
-		header:   header,
 		currency: currency,
 	}
 }
@@ -70,34 +65,9 @@ func (s *ReleaseService) Release(releaseID int) (*Release, error) {
 	params.Set("CurrAbbr", s.currency)
 
 	var release *Release
-	if err := s.request(strconv.Itoa(releaseID), params, &release); err != nil {
+	if err := request(s.url+strconv.Itoa(releaseID), params, &release); err != nil {
 		return nil, err
 	}
 
 	return release, nil
-}
-
-func (s *ReleaseService) request(path string, params url.Values, resp interface{}) error {
-	r, err := http.NewRequest("GET", s.url+path+"?"+params.Encode(), nil)
-	if err != nil {
-		return err
-	}
-	r.Header = *s.header
-
-	client := &http.Client{}
-	response, err := client.Do(r)
-	if err != nil {
-		return err
-	}
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return err
-	}
-
-	if err = json.Unmarshal(body, &resp); err != nil {
-		return err
-	}
-
-	return nil
 }

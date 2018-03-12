@@ -1,7 +1,6 @@
 package discogs
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -19,12 +18,13 @@ func TestReleaseServiceRelease(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(ReleaseServer))
 	defer ts.Close()
 
-	d, err := NewClient(&Options{URL: ts.URL})
-	if err != nil {
-		t.Fatalf("failed to create client: %s", err)
-	}
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
 	release, err := d.Release.Release(8138518)
+	if err != nil {
+		t.Fatalf("failed to get release: %s", err)
+	}
 
-	check(t, err)
-	assert(t, release.Title == expectedTitle, fmt.Sprintf("Release.Title looked for %s, and received %s ", expectedTitle, release.Title))
+	if release.Title != expectedTitle {
+		t.Fatalf("release title got=%s want=%s ", expectedTitle, release.Title)
+	}
 }

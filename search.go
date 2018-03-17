@@ -66,6 +66,7 @@ type Result struct {
 // Issue a search query to our database. This endpoint accepts pagination parameters.
 // Authentication (as any user) is required.
 // https://www.discogs.com/developers/#page:database,header:database-search
+// TODO(irlndts): improve params to pass
 func (s *SearchService) Search(params url.Values) (*Search, error) {
 	var search *Search
 	if err := request(s.url, params, &search); err != nil {

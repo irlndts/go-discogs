@@ -100,7 +100,6 @@ func request(path string, params url.Values, resp interface{}) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(body))
 
 	return json.Unmarshal(body, &resp)
 }

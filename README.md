@@ -32,28 +32,27 @@ client, err := discogs.NewClient(&discogs.Options{
         UserAgent: "Some Name",
         Currency:  "EUR", // optional, "USD" (default), "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed
         Token:     "Some Token", // optional
-        URL:       "https://api.discogs.com",
     })
 ``` 
 
 #### Releases
 ```go
-  release, err := client.Release.Release(9893847)
+  release, _ := client.Release.Release(9893847)
   fmt.Println(release.Artists[0].Name, " - ", release.Title) 
   // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```
 
 #### Search
-Issue a search query to discogs database. This endpoint accepts pagination parameters
+Issue a search query to discogs database. This endpoint accepts pagination parameters.
 Authentication (as any user) is required.
 
-Use `SearchRequest` struct to create a request
+Use `SearchRequest` struct to create a request.
 ```go
 type SearchRequest struct {
     Q             string // search query (optional)
     Type          string // one of release, master, artist, label (optional)
     Title         string // search by combined “Artist Name - Release Title” title field (optional)
-    Release_title string // search release titles (optional)
+    ReleaseTitle string // search release titles (optional)
     Credit        string // search release credits (optional)
     Artist        string // search artist names (optional)
     Anv           string // search artist ANV (optional)
@@ -70,14 +69,14 @@ type SearchRequest struct {
     Contributer   string // search contributor usernames (optional)
 
     Page     int // optional
-    Per_page int // optional
+    PerPage int // optional
 }
 ```
 
 Example
 ```go
-  request:= &discogs.SearchRequest{Artist: "reggaenauts", Release_title: "river rock", Page: 0, Per_page: 1}
-  search, _, err := client.Search(request)
+  request := discogs.SearchRequest{Artist: "reggaenauts", ReleaseTitle: "river rock", Page: 0, PerPage: 1}
+  search, _ := client.Search(request)
 
   for _, r := range search.Results {
     fmt.Println(r.Title)

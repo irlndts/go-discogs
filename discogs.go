@@ -64,7 +64,7 @@ func NewClient(o *Options) (*Client, error) {
 		Artist:  newArtistService(o.URL + "/artists/"),
 		Label:   newLabelService(o.URL + "/labels/"),
 		Master:  newMasterService(o.URL + "/masters/"),
-		Search:  newSearchService(base.New()),
+		Search:  newSearchService(o.URL + "/database/search"),
 	}, nil
 }
 

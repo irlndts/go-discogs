@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/url"
 
 	"github.com/irlndts/go-discogs"
 )
@@ -18,9 +17,9 @@ func main() {
 		return
 	}
 
-	params := url.Values{}
-	params.Set("q", "Ska-Jazz Review")
-	release, err := d.Search.Search(params)
+	release, err := d.Search.Search(discogs.SearchRequest{
+		Q: "Ska-Jazz Review",
+	})
 	if err != nil {
 		fmt.Println(err)
 		return

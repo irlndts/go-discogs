@@ -6,8 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-
-	"github.com/irlndts/go-apirequest"
 )
 
 const (
@@ -35,13 +33,11 @@ var header *http.Header
 // NewClient returns a new Client.
 func NewClient(o *Options) (*Client, error) {
 	header = &http.Header{}
-	base := apirequest.New().Client(&http.Client{}).Base(discogsAPI)
 
 	if o == nil || o.UserAgent == "" {
 		return nil, fmt.Errorf("failed to set user-agent")
 	}
 
-	base.Set("User-Agent", o.UserAgent)
 	header.Add("User-Agent", o.UserAgent)
 
 	cur, err := currency(o.Currency)
@@ -51,7 +47,6 @@ func NewClient(o *Options) (*Client, error) {
 
 	// set token, it's required for some queries like search
 	if o.Token != "" {
-		base.Set("Authorization", "Discogs token="+o.Token)
 		header.Add("Authorization", "Discogs token="+o.Token)
 	}
 
@@ -60,11 +55,11 @@ func NewClient(o *Options) (*Client, error) {
 	}
 
 	return &Client{
-		Release: newReleaseService(o.URL+"/releases/", cur),
-		Artist:  newArtistService(o.URL + "/artists/"),
-		Label:   newLabelService(o.URL + "/labels/"),
-		Master:  newMasterService(o.URL + "/masters/"),
-		Search:  newSearchService(o.URL + "/database/search"),
+		Release: newReleaseService(o.URL+"releases/", cur),
+		Artist:  newArtistService(o.URL + "artists/"),
+		Label:   newLabelService(o.URL + "labels/"),
+		Master:  newMasterService(o.URL + "masters/"),
+		Search:  newSearchService(o.URL + "database/search"),
 	}, nil
 }
 
@@ -83,6 +78,7 @@ func currency(c string) (string, error) {
 }
 
 func request(path string, params url.Values, resp interface{}) error {
+	fmt.Println(path + "?" + params.Encode())
 	r, err := http.NewRequest("GET", path+"?"+params.Encode(), nil)
 	if err != nil {
 		return err

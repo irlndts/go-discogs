@@ -1,6 +1,8 @@
 package discogs
 
-import "net/url"
+import (
+	"github.com/google/go-querystring/query"
+)
 
 // SearchService ...
 type SearchService struct {
@@ -15,27 +17,27 @@ func newSearchService(url string) *SearchService {
 
 // SerachRequest describes search request
 type SearchRequest struct {
-	Q             string // search query (optional)
-	Type          string // one of release, master, artist, label (optional)
-	Title         string // search by combined “Artist Name - Release Title” title field (optional)
-	Release_title string // search release titles (optional)
-	Credit        string // search release credits (optional)
-	Artist        string // search artist names (optional)
-	Anv           string // search artist ANV (optional)
-	Label         string // search label names (optional)
-	Genre         string // search genres (optional)
-	Style         string // search styles (optional)
-	Country       string // search release country (optional)
-	Year          string // search release year (optional)
-	Format        string // search formats (optional)
-	Catno         string // search catalog number (optional)
-	Barcode       string // search barcodes (optional)
-	Track         string // search track titles (optional)
-	Submitter     string // search submitter username (optional)
-	Contributer   string // search contributor usernames (optional)
+	Q            string `url:"q,omitempty"`             // search query
+	Type         string `url:"type,omitempty"`          // one of release, master, artist, label
+	Title        string `url:"title,omitempty"`         // search by combined “Artist Name - Release Title” title field
+	ReleaseTitle string `url:"release_title,omitempty"` // search release titles
+	Credit       string `url:"credit,omitempty"`        // search release credits
+	Artist       string `url:"artist,omitempty"`        // search artist names
+	Anv          string `url:"anv,omitempty"`           // search artist ANV
+	Label        string `url:"label,omitempty"`         // search label names
+	Genre        string `url:"genre,omitempty"`         // search genres
+	Style        string `url:"style,omitempty"`         // search styles
+	Country      string `url:"country,omitempty"`       // search release country
+	Year         string `url:"year,omitempty"`          // search release year
+	Format       string `url:"format,omitempty"`        // search formats
+	Catno        string `url:"catno,omitempty"`         // search catalog number
+	Barcode      string `url:"barcode,omitempty"`       // search barcodes
+	Track        string `url:"track,omitempty"`         // search track titles
+	Submitter    string `url:"submitter,omitempty"`     // search submitter username
+	Contributer  string `url:"contributer,omitempty"`   // search contributor usernames
 
-	Page    int // optional
-	PerPage int // optional
+	Page    int `url:"page,omitempty"`
+	PerPage int `url:"per_page,omitempty"`
 }
 
 // Search describes search response
@@ -67,7 +69,12 @@ type Result struct {
 // Authentication (as any user) is required.
 // https://www.discogs.com/developers/#page:database,header:database-search
 // TODO(irlndts): improve params to pass
-func (s *SearchService) Search(params url.Values) (*Search, error) {
+func (s *SearchService) Search(req SearchRequest) (*Search, error) {
+	params, err := query.Values(req)
+	if err != nil {
+		return nil, err
+	}
+
 	var search *Search
 	if err := request(s.url, params, &search); err != nil {
 		return nil, err

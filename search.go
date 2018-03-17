@@ -15,7 +15,7 @@ func newSearchService(url string) *SearchService {
 	}
 }
 
-// SerachRequest describes search request
+// SearchRequest describes search request
 type SearchRequest struct {
 	Q            string `url:"q,omitempty"`             // search query
 	Type         string `url:"type,omitempty"`          // one of release, master, artist, label

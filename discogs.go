@@ -12,6 +12,7 @@ const (
 	discogsAPI = "https://api.discogs.com/"
 )
 
+// Options is a set of options to use discogs API client
 type Options struct {
 	URL       string
 	Currency  string
@@ -73,7 +74,7 @@ func currency(c string) (string, error) {
 	case "":
 		return "USD", nil
 	default:
-		return "", fmt.Errorf("%v\n", "Invalid currency abbreviation.")
+		return "", fmt.Errorf("%v", "invalid currency abbreviation")
 	}
 }
 

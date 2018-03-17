@@ -4,6 +4,7 @@ import (
 	"strconv"
 )
 
+// MasterService ...
 type MasterService struct {
 	url string
 }
@@ -17,21 +18,21 @@ func newMasterService(url string) *MasterService {
 // Master resource represents a set of similar releases.
 // Masters (also known as `master releases`) have a `main release` which is often the chronologically earliest.
 type Master struct {
-	Styles           []string `json:"styles"`
-	Genres           []string `json:"genres"`
-	Videos           []Video  `json:"videos"`
-	Title            string   `json:"title"`
-	Main_release     int      `json:"main_release"`
-	Main_release_url string   `json:"main_release_url"`
-	Uri              string   `json:"uri"`
-	Artists          []Artist `json:"artists"`
-	Version_url      string   `json:"version_url"`
-	Year             int      `json:"year"`
-	Images           []Image  `json:"images"`
-	Resource_url     string   `json:"resource_url"`
-	Tracklist        []Track  `json:"tracklist"`
-	Id               int      `json:"id"`
-	Data_quality     string   `json:"data_quality"`
+	Styles         []string `json:"styles"`
+	Genres         []string `json:"genres"`
+	Videos         []Video  `json:"videos"`
+	Title          string   `json:"title"`
+	MainRelease    int      `json:"main_release"`
+	MainReleaseURL string   `json:"main_release_url"`
+	URI            string   `json:"uri"`
+	Artists        []Artist `json:"artists"`
+	VersionURL     string   `json:"version_url"`
+	Year           int      `json:"year"`
+	Images         []Image  `json:"images"`
+	ResourceURL    string   `json:"resource_url"`
+	Tracklist      []Track  `json:"tracklist"`
+	ID             int      `json:"id"`
+	DataQuality    string   `json:"data_quality"`
 }
 
 // Master returns a master release

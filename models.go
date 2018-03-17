@@ -53,7 +53,7 @@ type LabelSource struct {
 	ResourceURL string `json:"resource_url"`
 }
 
-// Itentifier ...
+// Identifier ...
 type Identifier struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`

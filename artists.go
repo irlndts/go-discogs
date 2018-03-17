@@ -17,12 +17,12 @@ func newArtistService(url string) *ArtistService {
 type Artist struct {
 	Namevariations []string `json:"namevariations"`
 	Profile        string   `json:"profile"`
-	Releases_url   string   `json:"releases_url"`
-	Resource_url   string   `json:"resource_url"`
-	Uri            string   `json:"uri"`
-	Urls           []string `json:"urls"`
-	Data_quality   string   `json:"data_quality"`
-	Id             int      `json:"id"`
+	ReleasesURL    string   `json:"releases_url"`
+	ResourceURL    string   `json:"resource_url"`
+	URI            string   `json:"uri"`
+	URLs           []string `json:"urls"`
+	DataQuality    string   `json:"data_quality"`
+	ID             int      `json:"id"`
 	Images         []Image  `json:"images"`
 	Members        []Member `json:"members"`
 }

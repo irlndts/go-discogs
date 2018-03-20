@@ -74,7 +74,7 @@ func currency(c string) (string, error) {
 	case "":
 		return "USD", nil
 	default:
-		return "", fmt.Errorf("%v", "invalid currency abbreviation")
+		return "", fmt.Errorf("invalid currency abbreviation")
 	}
 }
 

@@ -79,7 +79,7 @@ type ReleaseRating struct {
 	Rating Rating `json:"rating"`
 }
 
-// Ratings retruns community release rating
+// Rating retruns community release rating
 func (s *ReleaseService) Rating(releaseID int) (*ReleaseRating, error) {
 	var rating *ReleaseRating
 	if err := request(s.url+strconv.Itoa(releaseID)+"/rating", nil, &rating); err != nil {

@@ -17,9 +17,7 @@ func main() {
 		return
 	}
 
-	release, err := d.Search.Search(discogs.SearchRequest{
-		Q: "Ska-Jazz Review",
-	})
+	release, err := d.Database.Release(12345)
 	if err != nil {
 		fmt.Println(err)
 		return

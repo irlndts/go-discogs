@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	discogsAPI = "https://api.discogs.com/"
+	discogsAPI = "https://api.discogs.com"
 )
 
 // Options is a set of options to use discogs API client
@@ -22,11 +22,8 @@ type Options struct {
 
 // Client is a Discogs client for making Discogs API requests.
 type Client struct {
-	Release *ReleaseService
-	Master  *MasterService
-	Artist  *ArtistService
-	Label   *LabelService
-	Search  *SearchService
+	Database *DatabaseService
+	Search   *SearchService
 }
 
 var header *http.Header
@@ -56,11 +53,8 @@ func NewClient(o *Options) (*Client, error) {
 	}
 
 	return &Client{
-		Release: newReleaseService(o.URL+"releases/", cur),
-		Artist:  newArtistService(o.URL + "artists/"),
-		Label:   newLabelService(o.URL + "labels/"),
-		Master:  newMasterService(o.URL + "masters/"),
-		Search:  newSearchService(o.URL + "database/search"),
+		Database: newDatabaseService(o.URL, cur),
+		Search:   newSearchService(o.URL + "/database/search"),
 	}, nil
 }
 
@@ -79,7 +73,6 @@ func currency(c string) (string, error) {
 }
 
 func request(path string, params url.Values, resp interface{}) error {
-	fmt.Println(path + "?" + params.Encode())
 	r, err := http.NewRequest("GET", path+"?"+params.Encode(), nil)
 	if err != nil {
 		return err

@@ -5,13 +5,14 @@ go-discogs is a Go client library for the [Discogs API](https://www.discogs.com/
 ### Feauteres
  * Database
   * [Releases](#releases)
+  * Release Rating
   * Master Releases
-  * Release Versions
+  * Master Versions
   * Artists
   * Artist Releases
   * Label
   * All Label Releases
-  * [Search](#search)
+ * [Search](#search)
  
 Install
 --------
@@ -37,7 +38,7 @@ client, err := discogs.NewClient(&discogs.Options{
 
 #### Releases
 ```go
-  release, _ := client.Release.Release(9893847)
+  release, _ := client.Database.Release(9893847)
   fmt.Println(release.Artists[0].Name, " - ", release.Title) 
   // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```

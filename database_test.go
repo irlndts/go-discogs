@@ -19,7 +19,7 @@ func TestReleaseServiceRelease(t *testing.T) {
 	defer ts.Close()
 
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
-	release, err := d.Release.Release(8138518)
+	release, err := d.Database.Release(8138518)
 	if err != nil {
 		t.Fatalf("failed to get release: %s", err)
 	}

@@ -86,7 +86,7 @@ type ReleaseRating struct {
 	Rating Rating `json:"rating"`
 }
 
-// Rating retruns community release rating
+// ReleaseRating retruns community release rating
 func (s *DatabaseService) ReleaseRating(releaseID int) (*ReleaseRating, error) {
 	var rating *ReleaseRating
 	if err := request(s.url+releasesURI+strconv.Itoa(releaseID)+"/rating", nil, &rating); err != nil {
@@ -125,7 +125,7 @@ type ArtistReleases struct {
 	Releases   []ReleaseSource `json:"releases"`
 }
 
-// Releases returns a list of releases and masters associated with the artist.
+// ArtistReleases returns a list of releases and masters associated with the artist.
 func (s *DatabaseService) ArtistReleases(artistID int, pagination *Pagination) (*ArtistReleases, error) {
 	var releases *ArtistReleases
 	if err := request(s.url+artistsURI+strconv.Itoa(artistID)+"/releases", pagination.toParams(), &releases); err != nil {
@@ -165,7 +165,7 @@ type LabelReleases struct {
 	Releases   []ReleaseSource `json:"releases"`
 }
 
-// Releases returns a list of Releases associated with the label.
+// LabelReleases returns a list of Releases associated with the label.
 func (s *DatabaseService) LabelReleases(labelID int, pagination *Pagination) (*LabelReleases, error) {
 	var releases *LabelReleases
 	if err := request(s.url+labelsURI+strconv.Itoa(labelID)+"/releases", pagination.toParams(), &releases); err != nil {
@@ -209,7 +209,7 @@ type MasterVersions struct {
 	Versions   []Version `json:"versions"`
 }
 
-// Versions retrieves a list of all Releases that are versions of this master
+// MasterVersions retrieves a list of all Releases that are versions of this master
 func (s *DatabaseService) MasterVersions(masterID int, pagination *Pagination) (*MasterVersions, error) {
 	var versions *MasterVersions
 	if err := request(s.url+mastersURI+strconv.Itoa(masterID)+"/versions", pagination.toParams(), &versions); err != nil {

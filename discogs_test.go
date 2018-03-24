@@ -38,6 +38,7 @@ func TestNewClient(t *testing.T) {
 		"normal": {&Options{
 			UserAgent: testUserAgent,
 			Currency:  "USD",
+			Token:     "some token",
 		}, nil},
 		"incorrect user-agent": {&Options{
 			UserAgent: "",

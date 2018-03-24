@@ -2,7 +2,6 @@ package discogs
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -33,7 +32,7 @@ func NewClient(o *Options) (*Client, error) {
 	header = &http.Header{}
 
 	if o == nil || o.UserAgent == "" {
-		return nil, fmt.Errorf("failed to set user-agent")
+		return nil, ErrUserAgentInvalid
 	}
 
 	header.Add("User-Agent", o.UserAgent)
@@ -68,7 +67,7 @@ func currency(c string) (string, error) {
 	case "":
 		return "USD", nil
 	default:
-		return "", fmt.Errorf("invalid currency abbreviation")
+		return "", ErrCurrencyNotSupported
 	}
 }
 

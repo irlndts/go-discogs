@@ -9,7 +9,7 @@ import (
 func main() {
 	d, err := discogs.NewClient(&discogs.Options{
 		UserAgent: "TestDiscogsClient/0.0.1 +http://example.com",
-		Currency:  "EUR",
+		Currency:  "AAA",
 		Token:     "",
 	})
 	if err != nil {

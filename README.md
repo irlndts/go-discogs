@@ -1,6 +1,6 @@
 # REST API 2.0 Discogs.com client
 
-[![Build Status](https://travis-ci.org/irlndts/go-discogs.svg?branch=master)](https://travis-ci.org/irlndts/go-discogs)
+[![Build Status](https://travis-ci.org/irlndts/go-discogs.svg?branch=master)](https://travis-ci.org/irlndts/go-discogs)[![Go Report Card](https://goreportcard.com/badge/github.com/irlndts/go-discogs)](https://goreportcard.com/report/github.com/irlndts/go-discogs)
 
 go-discogs is a Go client library for the [Discogs API](https://www.discogs.com/developers/). Check the usage section to see how to access the Discogs API.
 

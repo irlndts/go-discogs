@@ -34,7 +34,7 @@ type SearchRequest struct {
 	Barcode      string `url:"barcode,omitempty"`       // search barcodes
 	Track        string `url:"track,omitempty"`         // search track titles
 	Submitter    string `url:"submitter,omitempty"`     // search submitter username
-	Contributer  string `url:"contributer,omitempty"`   // search contributor usernames
+	Contributor  string `url:"contributor,omitempty"`   // search contributor usernames
 
 	Page    int `url:"page,omitempty"`
 	PerPage int `url:"per_page,omitempty"`

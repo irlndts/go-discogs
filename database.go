@@ -25,11 +25,6 @@ func newDatabaseService(url string, currency string) *DatabaseService {
 	}
 }
 
-// ReqRelease serves release request
-type ReqRelease struct {
-	CurrAbbr string
-}
-
 // Release serves relesase response from discogs
 type Release struct {
 	Title             string         `json:"title"`
@@ -70,7 +65,7 @@ type Release struct {
 // Release returns release by release's ID
 func (s *DatabaseService) Release(releaseID int) (*Release, error) {
 	params := url.Values{}
-	params.Set("CurrAbbr", s.currency)
+	params.Set("curr_abbr", s.currency)
 
 	var release *Release
 	if err := request(s.url+releasesURI+strconv.Itoa(releaseID), params, &release); err != nil {

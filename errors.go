@@ -11,7 +11,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return fmt.Sprintf("%s", strings.ToLower(e.Message))
+	return fmt.Sprintf("discogs error: %s", strings.ToLower(e.Message))
 }
 
 // APIErrors

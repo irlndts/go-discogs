@@ -42,6 +42,7 @@ type Track struct {
 	Title        string         `json:"title"`
 	Type         string         `json:"type_"`
 	Extraartists []ArtistSource `json:"extraartists"`
+	Artists      []ArtistSource `json:"artists"`
 }
 
 // LabelSource ...

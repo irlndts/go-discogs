@@ -9,15 +9,16 @@ import (
 
 func ReleaseServer(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, `{"title":"Elephant Riddim"}`)
+	if _, err := io.WriteString(w, `{"title":"Elephant Riddim"}`); err != nil {
+		panic(err)
+	}
 }
 
 func TestReleaseServiceRelease(t *testing.T) {
-	expectedTitle := "Elephant Riddim"
-
 	ts := httptest.NewServer(http.HandlerFunc(ReleaseServer))
 	defer ts.Close()
 
+	expectedTitle := "Elephant Riddim"
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
 	release, err := d.Database.Release(8138518)
 	if err != nil {

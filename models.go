@@ -175,23 +175,15 @@ type Pagination struct {
 }
 
 // toParams converts pagaination params to request values
-func (p *Pagination) toParams() url.Values {
+func (p *Pagination) params() url.Values {
 	if p == nil {
 		return nil
 	}
 
 	params := url.Values{}
-	if p.Sort != "" {
-		params.Set("sort", p.Sort)
-	}
-	if p.SortOrder != "" {
-		params.Set("sort_order", p.SortOrder)
-	}
-	if p.Page != 0 {
-		params.Set("page", strconv.Itoa(p.Page))
-	}
-	if p.PerPage != 0 {
-		params.Set("per_page", strconv.Itoa(p.PerPage))
-	}
+	params.Set("sort", p.Sort)
+	params.Set("sort_order", p.SortOrder)
+	params.Set("page", strconv.Itoa(p.Page))
+	params.Set("per_page", strconv.Itoa(p.PerPage))
 	return params
 }

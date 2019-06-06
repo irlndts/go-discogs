@@ -2,6 +2,7 @@ package discogs
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -84,6 +85,15 @@ func request(path string, params url.Values, resp interface{}) error {
 		return err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		switch response.StatusCode {
+		case http.StatusUnauthorized:
+			return ErrUnauthorized
+		default:
+			return fmt.Errorf("unknown error: %s", response.Status)
+		}
+	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {

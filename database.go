@@ -68,11 +68,8 @@ func (s *DatabaseService) Release(releaseID int) (*Release, error) {
 	params.Set("curr_abbr", s.currency)
 
 	var release *Release
-	if err := request(s.url+releasesURI+strconv.Itoa(releaseID), params, &release); err != nil {
-		return nil, err
-	}
-
-	return release, nil
+	err := request(s.url+releasesURI+strconv.Itoa(releaseID), params, &release)
+	return release, err
 }
 
 // ReleaseRating serves response for community release rating request
@@ -84,11 +81,8 @@ type ReleaseRating struct {
 // ReleaseRating retruns community release rating
 func (s *DatabaseService) ReleaseRating(releaseID int) (*ReleaseRating, error) {
 	var rating *ReleaseRating
-	if err := request(s.url+releasesURI+strconv.Itoa(releaseID)+"/rating", nil, &rating); err != nil {
-		return nil, err
-	}
-
-	return rating, nil
+	err := request(s.url+releasesURI+strconv.Itoa(releaseID)+"/rating", nil, &rating)
+	return rating, err
 }
 
 // Artist ...
@@ -108,10 +102,8 @@ type Artist struct {
 // Artist represents a person in the discogs database
 func (s *DatabaseService) Artist(artistID int) (*Artist, error) {
 	var artist *Artist
-	if err := request(s.url+artistsURI+strconv.Itoa(artistID), nil, &artist); err != nil {
-		return nil, err
-	}
-	return artist, nil
+	err := request(s.url+artistsURI+strconv.Itoa(artistID), nil, &artist)
+	return artist, err
 }
 
 // ArtistReleases ...
@@ -123,10 +115,8 @@ type ArtistReleases struct {
 // ArtistReleases returns a list of releases and masters associated with the artist.
 func (s *DatabaseService) ArtistReleases(artistID int, pagination *Pagination) (*ArtistReleases, error) {
 	var releases *ArtistReleases
-	if err := request(s.url+artistsURI+strconv.Itoa(artistID)+"/releases", pagination.toParams(), &releases); err != nil {
-		return nil, err
-	}
-	return releases, nil
+	err := request(s.url+artistsURI+strconv.Itoa(artistID)+"/releases", pagination.params(), &releases)
+	return releases, err
 }
 
 // Label resource represents a label, company, recording studio, location,
@@ -148,10 +138,8 @@ type Label struct {
 // Label returns a label.
 func (s *DatabaseService) Label(labelID int) (*Label, error) {
 	var label *Label
-	if err := request(s.url+labelsURI+strconv.Itoa(labelID), nil, &label); err != nil {
-		return nil, err
-	}
-	return label, nil
+	err := request(s.url+labelsURI+strconv.Itoa(labelID), nil, &label)
+	return label, err
 }
 
 // LabelReleases is a list of Releases associated with the label.
@@ -163,10 +151,8 @@ type LabelReleases struct {
 // LabelReleases returns a list of Releases associated with the label.
 func (s *DatabaseService) LabelReleases(labelID int, pagination *Pagination) (*LabelReleases, error) {
 	var releases *LabelReleases
-	if err := request(s.url+labelsURI+strconv.Itoa(labelID)+"/releases", pagination.toParams(), &releases); err != nil {
-		return nil, err
-	}
-	return releases, nil
+	err := request(s.url+labelsURI+strconv.Itoa(labelID)+"/releases", pagination.params(), &releases)
+	return releases, err
 }
 
 // Master resource represents a set of similar releases.
@@ -192,10 +178,8 @@ type Master struct {
 // Master returns a master release
 func (s *DatabaseService) Master(masterID int) (*Master, error) {
 	var master *Master
-	if err := request(s.url+mastersURI+strconv.Itoa(masterID), nil, &master); err != nil {
-		return nil, err
-	}
-	return master, nil
+	err := request(s.url+mastersURI+strconv.Itoa(masterID), nil, &master)
+	return master, err
 }
 
 // MasterVersions retrieves a list of all releases that are versions of this master.
@@ -207,8 +191,6 @@ type MasterVersions struct {
 // MasterVersions retrieves a list of all Releases that are versions of this master
 func (s *DatabaseService) MasterVersions(masterID int, pagination *Pagination) (*MasterVersions, error) {
 	var versions *MasterVersions
-	if err := request(s.url+mastersURI+strconv.Itoa(masterID)+"/versions", pagination.toParams(), &versions); err != nil {
-		return nil, err
-	}
-	return versions, nil
+	err := request(s.url+mastersURI+strconv.Itoa(masterID)+"/versions", pagination.params(), &versions)
+	return versions, err
 }

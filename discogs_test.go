@@ -50,7 +50,8 @@ func TestNewClient(t *testing.T) {
 		}, ErrCurrencyNotSupported},
 	}
 
-	for name, tt := range tests {
+	for name := range tests {
+		tt := tests[name]
 		t.Run(name, func(t *testing.T) {
 			if _, err := NewClient(tt.options); err != tt.err {
 				t.Errorf("err got=%s; want=%s", err, tt.err)

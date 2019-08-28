@@ -79,7 +79,7 @@ type SearchRequest struct {
 Example
 ```go
   request := discogs.SearchRequest{Artist: "reggaenauts", ReleaseTitle: "river rock", Page: 0, PerPage: 1}
-  search, _ := client.Search(request)
+  search, _ := client.Search.Search(request)
 
   for _, r := range search.Results {
     fmt.Println(r.Title)

@@ -80,6 +80,7 @@ type Search struct {
 type Result struct {
 	Style       []string  `json:"style,omitempty"`
 	Thumb       string    `json:"thumb,omitempty"`
+	CoverImage  string    `json:"cover_image,omitempty"`
 	Title       string    `json:"title,omitempty"`
 	Country     string    `json:"country,omitempty"`
 	Format      []string  `json:"format,omitempty"`

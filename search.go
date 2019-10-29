@@ -47,26 +47,66 @@ func (r *SearchRequest) params() url.Values {
 	}
 
 	params := url.Values{}
-	params.Set("q", r.Q)
-	params.Set("type", r.Type)
-	params.Set("title", r.Title)
-	params.Set("release_title", r.ReleaseTitle)
-	params.Set("credit", r.Credit)
-	params.Set("artist", r.Artist)
-	params.Set("anv", r.Anv)
-	params.Set("label", r.Label)
-	params.Set("genre", r.Genre)
-	params.Set("style", r.Style)
-	params.Set("country", r.Country)
-	params.Set("year", r.Year)
-	params.Set("format", r.Format)
-	params.Set("catno", r.Catno)
-	params.Set("barcode", r.Barcode)
-	params.Set("track", r.Track)
-	params.Set("submitter", r.Submitter)
-	params.Set("contributor", r.Contributor)
+
+	if r.Q != "" {
+		params.Set("q", r.Q)
+	}
+	if r.Type != "" {
+		params.Set("type", r.Type)
+	}
+	if r.Title != "" {
+		params.Set("title", r.Title)
+	}
+	if r.ReleaseTitle != "" {
+		params.Set("release_title", r.ReleaseTitle)
+	}
+	if r.Credit != "" {
+		params.Set("credit", r.Credit)
+	}
+	if r.Artist != "" {
+		params.Set("artist", r.Artist)
+	}
+	if r.Anv != "" {
+		params.Set("anv", r.Anv)
+	}
+	if r.Label != "" {
+		params.Set("label", r.Label)
+	}
+	if r.Genre != "" {
+		params.Set("genre", r.Genre)
+	}
+	if r.Style != "" {
+		params.Set("style", r.Style)
+	}
+	if r.Country != "" {
+		params.Set("country", r.Country)
+	}
+	if r.Year != "" {
+		params.Set("year", r.Year)
+	}
+	if r.Format != "" {
+		params.Set("format", r.Format)
+	}
+	if r.Catno != "" {
+		params.Set("catno", r.Catno)
+	}
+	if r.Barcode != "" {
+		params.Set("barcode", r.Barcode)
+	}
+	if r.Track != "" {
+		params.Set("track", r.Track)
+	}
+	if r.Submitter != "" {
+		params.Set("submitter", r.Submitter)
+	}
+	if r.Contributor != "" {
+		params.Set("contributor", r.Contributor)
+	}
+
 	params.Set("page", strconv.Itoa(r.Page))
-	params.Set("per_page", strconv.Itoa(r.PerPage))
+	if r.PerPage != 0 {
+		params.Set("per_page", strconv.Itoa(r.PerPage))
+	}
 	return params
 }
 

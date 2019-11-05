@@ -17,10 +17,10 @@ func main() {
 		return
 	}
 
-	release, err := d.Search.Search(discogs.SearchRequest{Q: "middle", PerPage: 3})
+	master, err := d.Database.Master(718441)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Printf("%+v\n", release)
+	fmt.Printf("%+v\n", master)
 }

@@ -133,6 +133,7 @@ type Result struct {
 	ResourceURL string    `json:"resource_url,omitempty"`
 	Type        string    `json:"type,omitempty"`
 	ID          int       `json:"id,omitempty"`
+	MasterID    int       `json:"master_id,omitempty"`
 }
 
 // Search makes search request to discogs.

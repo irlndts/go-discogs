@@ -30,6 +30,7 @@ type Release struct {
 	Title             string         `json:"title"`
 	ID                int            `json:"id"`
 	Artists           []ArtistSource `json:"artists"`
+	ArtistsSort       string         `json:"artists_sort"`
 	DataQuality       string         `json:"data_quality"`
 	Thumb             string         `json:"thumb"`
 	Community         Community      `json:"community"`
@@ -53,13 +54,13 @@ type Release struct {
 	Released          string         `json:"released"`
 	ReleasedFormatted string         `json:"released_formatted"`
 	ResourceURL       string         `json:"resource_url"`
-	// Series
-	Status    string   `json:"status"`
-	Styles    []string `json:"styles"`
-	Tracklist []Track  `json:"tracklist"`
-	URI       string   `json:"uri"`
-	Videos    []Video  `json:"videos"`
-	Year      int      `json:"year"`
+	Series            []string       `json:"series"`
+	Status            string         `json:"status"`
+	Styles            []string       `json:"styles"`
+	Tracklist         []Track        `json:"tracklist"`
+	URI               string         `json:"uri"`
+	Videos            []Video        `json:"videos"`
+	Year              int            `json:"year"`
 }
 
 // Release returns release by release's ID
@@ -85,18 +86,23 @@ func (s *DatabaseService) ReleaseRating(releaseID int) (*ReleaseRating, error) {
 	return rating, err
 }
 
-// Artist ...
+// Artist resource represents a person in the Discogs database
+// who contributed to a Release in some capacity.
+// More information https://www.discogs.com/developers#page:database,header:database-artist
 type Artist struct {
+	ID             int      `json:"id"`
+	Name           string   `json:"name"`
+	Realname       string   `json:"realname"`
+	Members        []Member `json:"members,omitempty"`
+	Aliases        []Alias  `json:"aliases,omitempty"`
 	Namevariations []string `json:"namevariations"`
+	Images         []Image  `json:"images"`
 	Profile        string   `json:"profile"`
 	ReleasesURL    string   `json:"releases_url"`
 	ResourceURL    string   `json:"resource_url"`
 	URI            string   `json:"uri"`
 	URLs           []string `json:"urls"`
 	DataQuality    string   `json:"data_quality"`
-	ID             int      `json:"id"`
-	Images         []Image  `json:"images"`
-	Members        []Member `json:"members"`
 }
 
 // Artist represents a person in the discogs database
@@ -157,22 +163,28 @@ func (s *DatabaseService) LabelReleases(labelID int, pagination *Pagination) (*L
 
 // Master resource represents a set of similar releases.
 // Masters (also known as `master releases`) have a `main release` which is often the chronologically earliest.
+// More information https://www.discogs.com/developers#page:database,header:database-master-release
 type Master struct {
-	Styles         []string `json:"styles"`
-	Genres         []string `json:"genres"`
-	Videos         []Video  `json:"videos"`
-	Title          string   `json:"title"`
-	MainRelease    int      `json:"main_release"`
-	MainReleaseURL string   `json:"main_release_url"`
-	URI            string   `json:"uri"`
-	Artists        []Artist `json:"artists"`
-	VersionURL     string   `json:"version_url"`
-	Year           int      `json:"year"`
-	Images         []Image  `json:"images"`
-	ResourceURL    string   `json:"resource_url"`
-	Tracklist      []Track  `json:"tracklist"`
-	ID             int      `json:"id"`
-	DataQuality    string   `json:"data_quality"`
+	ID                   int            `json:"id"`
+	Styles               []string       `json:"styles"`
+	Genres               []string       `json:"genres"`
+	Title                string         `json:"title"`
+	Year                 int            `json:"year"`
+	Tracklist            []Track        `json:"tracklist"`
+	Notes                string         `json:"notes"`
+	Artists              []ArtistSource `json:"artists"`
+	Images               []Image        `json:"images"`
+	Videos               []Video        `json:"videos"`
+	NumForSale           int            `json:"num_for_sale"`
+	LowestPrice          float64        `json:"lowest_price"`
+	URI                  string         `json:"uri"`
+	MainRelease          int            `json:"main_release"`
+	MainReleaseURL       string         `json:"main_release_url"`
+	MostRecentRelease    int            `json:"most_recent_release"`
+	MostRecentReleaseURL string         `json:"most_recent_release_url"`
+	VersionsURL          string         `json:"versions_url"`
+	ResourceURL          string         `json:"resource_url"`
+	DataQuality          string         `json:"data_quality"`
 }
 
 // Master returns a master release

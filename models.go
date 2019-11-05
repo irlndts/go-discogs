@@ -41,17 +41,18 @@ type Track struct {
 	Position     string         `json:"position"`
 	Title        string         `json:"title"`
 	Type         string         `json:"type_"`
-	Extraartists []ArtistSource `json:"extraartists"`
-	Artists      []ArtistSource `json:"artists"`
+	Extraartists []ArtistSource `json:"extraartists,omitempty"`
+	Artists      []ArtistSource `json:"artists,omitempty"`
 }
 
 // LabelSource ...
 type LabelSource struct {
-	Catno       string `json:"catno"`
-	EntityType  string `json:"entity_type"`
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	ResourceURL string `json:"resource_url"`
+	Catno          string `json:"catno"`
+	EntityType     string `json:"entity_type"`
+	EntityTypeName string `json:"entity_type_name"`
+	ID             int    `json:"id"`
+	Name           string `json:"name"`
+	ResourceURL    string `json:"resource_url"`
 }
 
 // Identifier ...
@@ -80,7 +81,7 @@ type Company struct {
 // Community ...
 type Community struct {
 	Contributors []Contributor `json:"contributors"`
-	DataQuality  string        `json:"string"`
+	DataQuality  string        `json:"data_quality"`
 	Have         int           `json:"have"`
 	Rating       Rating        `json:"rating"`
 	Status       string        `json:"status"`
@@ -138,6 +139,13 @@ type Version struct {
 // Member ...
 type Member struct {
 	Active      bool   `json:"active"`
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	ResourceURL string `json:"resource_url"`
+}
+
+// Alias ...
+type Alias struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	ResourceURL string `json:"resource_url"`

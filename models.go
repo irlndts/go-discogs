@@ -68,8 +68,9 @@ type LabelSource struct {
 
 // Identifier ...
 type Identifier struct {
-	Type  string `json:"type"`
-	Value string `json:"value"`
+    Description string `json:"description"`
+	Type        string `json:"type"`
+	Value       string `json:"value"`
 }
 
 // Format ...

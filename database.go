@@ -54,7 +54,7 @@ type Release struct {
 	Released          string         `json:"released"`
 	ReleasedFormatted string         `json:"released_formatted"`
 	ResourceURL       string         `json:"resource_url"`
-	Series            []string       `json:"series"`
+	Series            []Series       `json:"series"`
 	Status            string         `json:"status"`
 	Styles            []string       `json:"styles"`
 	Tracklist         []Track        `json:"tracklist"`

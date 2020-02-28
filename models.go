@@ -14,6 +14,17 @@ type Video struct {
 	URI         string `json:"uri"`
 }
 
+// Series ...
+type Series struct {
+	Catno          string `json:"catno"`
+	EntityType     string `json:"entity_type"`
+	EntityTypeName string `json:"entity_type_name"`
+	ID             int    `json:"id"`
+	Name           string `json:"name"`
+	ResourceURL    string `json:"resource_url"`
+	ThumbnailURL   string `json:"thumbnail_url"`
+}
+
 // ArtistSource ...
 type ArtistSource struct {
 	Anv         string `json:"anv"`
@@ -57,8 +68,9 @@ type LabelSource struct {
 
 // Identifier ...
 type Identifier struct {
-	Type  string `json:"type"`
-	Value string `json:"value"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Value       string `json:"value"`
 }
 
 // Format ...

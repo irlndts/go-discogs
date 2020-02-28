@@ -22,7 +22,7 @@ type Series struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
 	ResourceURL    string `json:"resource_url"`
-	ThumbnailURL   string `json:"thumbnail_url"`
+	ThumbnailURL   string `json:"thumbnail_url,omitempty"`
 }
 
 // ArtistSource ...
@@ -68,7 +68,7 @@ type LabelSource struct {
 
 // Identifier ...
 type Identifier struct {
-	Description string `json:"description"`
+	Description string `json:"description,omitempty"`
 	Type        string `json:"type"`
 	Value       string `json:"value"`
 }

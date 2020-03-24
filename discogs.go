@@ -14,22 +14,26 @@ const (
 
 // Options is a set of options to use discogs API client
 type Options struct {
-	URL       string
-	Currency  string
+	// Discogs API endpoint (optional).
+	URL string
+	// Currency to use (optional, default is USD).
+	Currency string
+	// UserAgent to to call discogs api with.
 	UserAgent string
-	Token     string
+	// Token provided by discogs (optional).
+	Token string
 }
 
-// Client is a Discogs client for making Discogs API requests.
-type Client struct {
+// Discogs is a Discogs' client for making Discogs API requests.
+type Discogs struct {
 	Database *DatabaseService
 	Search   *SearchService
 }
 
 var header *http.Header
 
-// NewClient returns a new Client.
-func NewClient(o *Options) (*Client, error) {
+// New returns a new discogs API client.
+func New(o *Options) (*Discogs, error) {
 	header = &http.Header{}
 
 	if o == nil || o.UserAgent == "" {
@@ -52,7 +56,7 @@ func NewClient(o *Options) (*Client, error) {
 		o.URL = discogsAPI
 	}
 
-	return &Client{
+	return &Discogs{
 		Database: newDatabaseService(o.URL, cur),
 		Search:   newSearchService(o.URL + "/database/search"),
 	}, nil

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	d, err := discogs.NewClient(&discogs.Options{
+	d, err := discogs.New(&discogs.Options{
 		UserAgent: "TestDiscogsClient/0.0.1 +http://example.com",
 		Currency:  "USD",
 		Token:     "",

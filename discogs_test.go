@@ -9,7 +9,7 @@ const (
 	testToken     = ""
 )
 
-func initDiscogsClient(t *testing.T, options *Options) *Client {
+func initDiscogsClient(t *testing.T, options *Options) *Discogs {
 	if options == nil {
 		options = &Options{
 			UserAgent: testUserAgent,
@@ -22,7 +22,7 @@ func initDiscogsClient(t *testing.T, options *Options) *Client {
 		options.UserAgent = testUserAgent
 	}
 
-	client, err := NewClient(options)
+	client, err := New(options)
 	if err != nil {
 		t.Fatalf("failed to create client: %s", err)
 	}
@@ -30,7 +30,7 @@ func initDiscogsClient(t *testing.T, options *Options) *Client {
 	return client
 }
 
-func TestNewClient(t *testing.T) {
+func TestNew(t *testing.T) {
 	tests := map[string]struct {
 		options *Options
 		err     error
@@ -53,7 +53,7 @@ func TestNewClient(t *testing.T) {
 	for name := range tests {
 		tt := tests[name]
 		t.Run(name, func(t *testing.T) {
-			if _, err := NewClient(tt.options); err != tt.err {
+			if _, err := New(tt.options); err != tt.err {
 				t.Errorf("err got=%s; want=%s", err, tt.err)
 			}
 		})

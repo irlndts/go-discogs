@@ -12,20 +12,39 @@ const (
 	mastersURI  = "/masters/"
 )
 
-// DatabaseService ...
-type DatabaseService struct {
+// DatabaseService is an interface to work with database.
+type DatabaseService interface {
+	// Artist represents a person in the discogs database.
+	Artist(artistID int) (*Artist, error)
+	// ArtistReleases returns a list of releases and masters associated with the artist.
+	ArtistReleases(artistID int, pagination *Pagination) (*ArtistReleases, error)
+	// Label returns a label.
+	Label(labelID int) (*Label, error)
+	// LabelReleases returns a list of Releases associated with the label.
+	LabelReleases(labelID int, pagination *Pagination) (*LabelReleases, error)
+	// Master returns a master release.
+	Master(masterID int) (*Master, error)
+	// MasterVersions retrieves a list of all Releases that are versions of this master.
+	MasterVersions(masterID int, pagination *Pagination) (*MasterVersions, error)
+	// Release returns release by release's ID.
+	Release(releaseID int) (*Release, error)
+	// ReleaseRating retruns community release rating.
+	ReleaseRating(releaseID int) (*ReleaseRating, error)
+}
+
+type databaseService struct {
 	url      string
 	currency string
 }
 
-func newDatabaseService(url string, currency string) *DatabaseService {
-	return &DatabaseService{
+func newDatabaseService(url string, currency string) DatabaseService {
+	return &databaseService{
 		url:      url,
 		currency: currency,
 	}
 }
 
-// Release serves relesase response from discogs
+// Release serves relesase response from discogs.
 type Release struct {
 	Title             string         `json:"title"`
 	ID                int            `json:"id"`
@@ -63,8 +82,7 @@ type Release struct {
 	Year              int            `json:"year"`
 }
 
-// Release returns release by release's ID
-func (s *DatabaseService) Release(releaseID int) (*Release, error) {
+func (s *databaseService) Release(releaseID int) (*Release, error) {
 	params := url.Values{}
 	params.Set("curr_abbr", s.currency)
 
@@ -73,14 +91,13 @@ func (s *DatabaseService) Release(releaseID int) (*Release, error) {
 	return release, err
 }
 
-// ReleaseRating serves response for community release rating request
+// ReleaseRating serves response for community release rating request.
 type ReleaseRating struct {
 	ID     int    `json:"release_id"`
 	Rating Rating `json:"rating"`
 }
 
-// ReleaseRating retruns community release rating
-func (s *DatabaseService) ReleaseRating(releaseID int) (*ReleaseRating, error) {
+func (s *databaseService) ReleaseRating(releaseID int) (*ReleaseRating, error) {
 	var rating *ReleaseRating
 	err := request(s.url+releasesURI+strconv.Itoa(releaseID)+"/rating", nil, &rating)
 	return rating, err
@@ -105,8 +122,7 @@ type Artist struct {
 	DataQuality    string   `json:"data_quality"`
 }
 
-// Artist represents a person in the discogs database
-func (s *DatabaseService) Artist(artistID int) (*Artist, error) {
+func (s *databaseService) Artist(artistID int) (*Artist, error) {
 	var artist *Artist
 	err := request(s.url+artistsURI+strconv.Itoa(artistID), nil, &artist)
 	return artist, err
@@ -118,8 +134,7 @@ type ArtistReleases struct {
 	Releases   []ReleaseSource `json:"releases"`
 }
 
-// ArtistReleases returns a list of releases and masters associated with the artist.
-func (s *DatabaseService) ArtistReleases(artistID int, pagination *Pagination) (*ArtistReleases, error) {
+func (s *databaseService) ArtistReleases(artistID int, pagination *Pagination) (*ArtistReleases, error) {
 	var releases *ArtistReleases
 	err := request(s.url+artistsURI+strconv.Itoa(artistID)+"/releases", pagination.params(), &releases)
 	return releases, err
@@ -141,8 +156,7 @@ type Label struct {
 	DataQuality string     `json:"data_quality"`
 }
 
-// Label returns a label.
-func (s *DatabaseService) Label(labelID int) (*Label, error) {
+func (s *databaseService) Label(labelID int) (*Label, error) {
 	var label *Label
 	err := request(s.url+labelsURI+strconv.Itoa(labelID), nil, &label)
 	return label, err
@@ -154,8 +168,7 @@ type LabelReleases struct {
 	Releases   []ReleaseSource `json:"releases"`
 }
 
-// LabelReleases returns a list of Releases associated with the label.
-func (s *DatabaseService) LabelReleases(labelID int, pagination *Pagination) (*LabelReleases, error) {
+func (s *databaseService) LabelReleases(labelID int, pagination *Pagination) (*LabelReleases, error) {
 	var releases *LabelReleases
 	err := request(s.url+labelsURI+strconv.Itoa(labelID)+"/releases", pagination.params(), &releases)
 	return releases, err
@@ -187,8 +200,7 @@ type Master struct {
 	DataQuality          string         `json:"data_quality"`
 }
 
-// Master returns a master release
-func (s *DatabaseService) Master(masterID int) (*Master, error) {
+func (s *databaseService) Master(masterID int) (*Master, error) {
 	var master *Master
 	err := request(s.url+mastersURI+strconv.Itoa(masterID), nil, &master)
 	return master, err
@@ -200,8 +212,7 @@ type MasterVersions struct {
 	Versions   []Version `json:"versions"`
 }
 
-// MasterVersions retrieves a list of all Releases that are versions of this master
-func (s *DatabaseService) MasterVersions(masterID int, pagination *Pagination) (*MasterVersions, error) {
+func (s *databaseService) MasterVersions(masterID int, pagination *Pagination) (*MasterVersions, error) {
 	var versions *MasterVersions
 	err := request(s.url+mastersURI+strconv.Itoa(masterID)+"/versions", pagination.params(), &versions)
 	return versions, err

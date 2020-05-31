@@ -24,16 +24,21 @@ type Options struct {
 	Token string
 }
 
-// Discogs is a Discogs' client for making Discogs API requests.
-type Discogs struct {
-	Database *DatabaseService
-	Search   *SearchService
+// Discogs is an interface for making Discogs API requests.
+type Discogs interface {
+	DatabaseService
+	SearchService
+}
+
+type discogs struct {
+	DatabaseService
+	SearchService
 }
 
 var header *http.Header
 
 // New returns a new discogs API client.
-func New(o *Options) (*Discogs, error) {
+func New(o *Options) (Discogs, error) {
 	header = &http.Header{}
 
 	if o == nil || o.UserAgent == "" {
@@ -56,9 +61,9 @@ func New(o *Options) (*Discogs, error) {
 		o.URL = discogsAPI
 	}
 
-	return &Discogs{
-		Database: newDatabaseService(o.URL, cur),
-		Search:   newSearchService(o.URL + "/database/search"),
+	return discogs{
+		newDatabaseService(o.URL, cur),
+		newSearchService(o.URL + "/database/search"),
 	}, nil
 }
 

@@ -5,13 +5,22 @@ import (
 	"strconv"
 )
 
-// SearchService ...
-type SearchService struct {
+// SearchService is an interface to work with search.
+type SearchService interface {
+	// Search makes search request to discogs.
+	// Issue a search query to database. This endpoint accepts pagination parameters.
+	// Authentication (as any user) is required.
+	// https://www.discogs.com/developers/#page:database,header:database-search
+	Search(req SearchRequest) (*Search, error)
+}
+
+// searchService ...
+type searchService struct {
 	url string
 }
 
-func newSearchService(url string) *SearchService {
-	return &SearchService{
+func newSearchService(url string) SearchService {
+	return &searchService{
 		url: url,
 	}
 }
@@ -136,11 +145,7 @@ type Result struct {
 	MasterID    int       `json:"master_id,omitempty"`
 }
 
-// Search makes search request to discogs.
-// Issue a search query to our database. This endpoint accepts pagination parameters.
-// Authentication (as any user) is required.
-// https://www.discogs.com/developers/#page:database,header:database-search
-func (s *SearchService) Search(req SearchRequest) (*Search, error) {
+func (s *searchService) Search(req SearchRequest) (*Search, error) {
 	var search *Search
 	err := request(s.url, req.params(), &search)
 	return search, err

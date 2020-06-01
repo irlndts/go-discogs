@@ -5,11 +5,11 @@ import (
 )
 
 const (
-	testUserAgent = "UnitTestClient/0.0.2 +https://github.com/irlndts/go-discogs"
+	testUserAgent = "UnitTestClient/0.0.2"
 	testToken     = ""
 )
 
-func initDiscogsClient(t *testing.T, options *Options) *Discogs {
+func initDiscogsClient(t *testing.T, options *Options) Discogs {
 	if options == nil {
 		options = &Options{
 			UserAgent: testUserAgent,
@@ -66,19 +66,19 @@ func TestCurrency(t *testing.T) {
 		want     string
 		err      error
 	}{
-		{currency: "", want: "USD", err: nil},
-		{currency: "USD", want: "USD", err: nil},
-		{currency: "GBP", want: "GBP", err: nil},
-		{currency: "EUR", want: "EUR", err: nil},
-		{currency: "CAD", want: "CAD", err: nil},
-		{currency: "AUD", want: "AUD", err: nil},
-		{currency: "JPY", want: "JPY", err: nil},
-		{currency: "CHF", want: "CHF", err: nil},
-		{currency: "MXN", want: "MXN", err: nil},
-		{currency: "BRL", want: "BRL", err: nil},
-		{currency: "NZD", want: "NZD", err: nil},
-		{currency: "SEK", want: "SEK", err: nil},
-		{currency: "ZAR", want: "ZAR", err: nil},
+		{currency: "", want: "USD"},
+		{currency: "USD", want: "USD"},
+		{currency: "GBP", want: "GBP"},
+		{currency: "EUR", want: "EUR"},
+		{currency: "CAD", want: "CAD"},
+		{currency: "AUD", want: "AUD"},
+		{currency: "JPY", want: "JPY"},
+		{currency: "CHF", want: "CHF"},
+		{currency: "MXN", want: "MXN"},
+		{currency: "BRL", want: "BRL"},
+		{currency: "NZD", want: "NZD"},
+		{currency: "SEK", want: "SEK"},
+		{currency: "ZAR", want: "ZAR"},
 		{currency: "RUR", want: "", err: ErrCurrencyNotSupported},
 	}
 	for i, tt := range tests {

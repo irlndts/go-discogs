@@ -20,7 +20,7 @@ The lib is under MIT but be sure you are familiar with [Discogs API Terms of Use
  
 Install
 --------
-    go get -u github.com/irlndts/go-discogs
+    go get github.com/irlndts/go-discogs
 
 Usage
 ---------
@@ -31,7 +31,7 @@ import "github.com/irlndts/go-discogs"
 ```
 
 Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
-This is token way example:
+
 ```go
 client, err := discogs.New(&discogs.Options{
         UserAgent: "Some Name",
@@ -43,7 +43,7 @@ client, err := discogs.New(&discogs.Options{
 
 #### Releases
 ```go
-  release, _ := client.Database.Release(9893847)
+  release, _ := client.Release(9893847)
   fmt.Println(release.Artists[0].Name, " - ", release.Title) 
   // St. Petersburg Ska-Jazz Review  -  Elephant Riddim
 ```
@@ -75,14 +75,14 @@ type SearchRequest struct {
     Contributer   string // search contributor usernames (optional)
 
     Page     int // optional
-    PerPage int // optional
+    PerPage  int // optional
 }
 ```
 
 Example
 ```go
   request := discogs.SearchRequest{Artist: "reggaenauts", ReleaseTitle: "river rock", Page: 0, PerPage: 1}
-  search, _ := client.Search.Search(request)
+  search, _ := client.Search(request)
 
   for _, r := range search.Results {
     fmt.Println(r.Title)

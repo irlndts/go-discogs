@@ -60,7 +60,7 @@ func TestDatabaseServiceRelease(t *testing.T) {
 	defer ts.Close()
 
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
-	release, err := d.Database.Release(8138518)
+	release, err := d.Release(8138518)
 	if err != nil {
 		t.Fatalf("failed to get release: %s", err)
 	}
@@ -78,7 +78,7 @@ func TestDatabaseServiceMaster(t *testing.T) {
 	defer ts.Close()
 
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
-	master, err := d.Database.Master(718441)
+	master, err := d.Master(718441)
 	if err != nil {
 		t.Fatalf("failed to get master: %s", err)
 	}
@@ -95,7 +95,7 @@ func TestDatabaseServiceArtist(t *testing.T) {
 	defer ts.Close()
 
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
-	artist, err := d.Database.Artist(38661)
+	artist, err := d.Artist(38661)
 	if err != nil {
 		t.Fatalf("failed to get master: %s", err)
 	}

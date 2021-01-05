@@ -36,6 +36,13 @@ func CollectionServer(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+	case "/users/" + testUsername + "/collection/releases/12934893":
+		w.WriteHeader(http.StatusOK)
+		if _, err := io.WriteString(w, collectionItemsByRelease); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
@@ -60,7 +67,7 @@ func TestCollectionServiceFolder(t *testing.T) {
 	compareJson(t, string(json), folderJson)
 }
 
-func TestCollectionServiceCollection(t *testing.T) {
+func TestCollectionServiceCollectionFolders(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
@@ -97,4 +104,24 @@ func TestCollectionServiceCollectionItemsByFolder(t *testing.T) {
 	}
 
 	compareJson(t, string(json), collectionItemsByFolderJson)
+}
+
+func TestCollectionServiceCollectionItemsByRelease(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
+	defer ts.Close()
+
+	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+
+	items, err := d.CollectionItemsByRelease(12934893, &Pagination{PerPage: 2})
+
+	if err != nil {
+		t.Fatalf("failed to get collection items: %s", err)
+	}
+
+	json, err := json.Marshal(items)
+	if err != nil {
+		t.Fatalf("failed to marshal collection items: %s", err)
+	}
+
+	compareJson(t, string(json), collectionItemsByRelease)
 }

@@ -131,8 +131,8 @@ type Page struct {
 
 // URLsList ...
 type URLsList struct {
-	Last string `json:"last"`
-	Next string `json:"next"`
+	Last string `json:"last,omitempty"`
+	Next string `json:"next,omitempty"`
 }
 
 // Version ...

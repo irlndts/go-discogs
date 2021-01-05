@@ -22,15 +22,19 @@ type Options struct {
 	UserAgent string
 	// Token provided by discogs (optional).
 	Token string
+	// Username of the collection you are interacting with (optional, required for user collection).
+	Username string
 }
 
 // Discogs is an interface for making Discogs API requests.
 type Discogs interface {
+	CollectionService
 	DatabaseService
 	SearchService
 }
 
 type discogs struct {
+	CollectionService
 	DatabaseService
 	SearchService
 }
@@ -52,6 +56,8 @@ func New(o *Options) (Discogs, error) {
 		return nil, err
 	}
 
+	username := o.Username
+
 	// set token, it's required for some queries like search
 	if o.Token != "" {
 		header.Add("Authorization", "Discogs token="+o.Token)
@@ -62,6 +68,7 @@ func New(o *Options) (Discogs, error) {
 	}
 
 	return discogs{
+		newCollectionService(o.URL+"/users", username),
 		newDatabaseService(o.URL, cur),
 		newSearchService(o.URL + "/database/search"),
 	}, nil

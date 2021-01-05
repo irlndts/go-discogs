@@ -2,7 +2,6 @@ package discogs
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -15,9 +14,14 @@ func CollectionServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(r.URL.Path)
-
 	switch r.URL.Path {
+	case "/users/" + testUsername + "/collection/folders":
+		w.WriteHeader(http.StatusOK)
+		if _, err := io.WriteString(w, collectionJson); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 	case "/users/" + testUsername + "/collection/folders/0":
 		w.WriteHeader(http.StatusOK)
 		if _, err := io.WriteString(w, folderJson); err != nil {
@@ -47,4 +51,23 @@ func TestCollectionServiceFolder(t *testing.T) {
 	}
 
 	compareJson(t, string(json), folderJson)
+}
+
+func TestCollectionServiceCollection(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
+	defer ts.Close()
+
+	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+
+	collection, err := d.CollectionFolders()
+	if err != nil {
+		t.Fatalf("failed to get collection: %s", err)
+	}
+
+	json, err := json.Marshal(collection)
+	if err != nil {
+		t.Fatalf("failed to marshal collection: %s", err)
+	}
+
+	compareJson(t, string(json), collectionJson)
 }

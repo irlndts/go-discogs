@@ -29,6 +29,13 @@ func CollectionServer(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+	case "/users/" + testUsername + "/collection/folders/0/releases":
+		w.WriteHeader(http.StatusOK)
+		if _, err := io.WriteString(w, collectionItemsByFolderJson); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
@@ -70,4 +77,24 @@ func TestCollectionServiceCollection(t *testing.T) {
 	}
 
 	compareJson(t, string(json), collectionJson)
+}
+
+func TestCollectionServiceCollectionItemsByFolder(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
+	defer ts.Close()
+
+	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+
+	items, err := d.CollectionItemsByFolder(0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
+
+	if err != nil {
+		t.Fatalf("failed to get collection items: %s", err)
+	}
+
+	json, err := json.Marshal(items)
+	if err != nil {
+		t.Fatalf("failed to marshal collection items: %s", err)
+	}
+
+	compareJson(t, string(json), collectionItemsByFolderJson)
 }

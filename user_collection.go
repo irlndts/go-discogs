@@ -9,7 +9,11 @@ import (
 type CollectionService interface {
 	// Retrieve a list of folders in a user’s collection.
 	CollectionFolders() (*CollectionFolders, error)
-	// Retrieve metadata about a folder in a user’s collection
+	// Retrieve a list of items in a folder in a user’s collection.
+	CollectionItemsByFolder(folderID int, pagination *Pagination) (*CollectionItems, error)
+	// Retrieve the user’s collection folders which contain a specified release.
+	CollectionItemsByRelease(releaseID int, pagination *Pagination) (*CollectionItems, error)
+	// Retrieve metadata about a folder in a user’s collection.
 	Folder(folderID int) (*Folder, error)
 }
 
@@ -40,7 +44,7 @@ func (s *collectionService) Folder(folderID int) (*Folder, error) {
 	return folder, err
 }
 
-// Collection serves collection response from discogs.
+// CollectionFolders serves collection response from discogs.
 type CollectionFolders struct {
 	Folders []Folder `json:"folders"`
 }
@@ -50,4 +54,50 @@ func (s *collectionService) CollectionFolders() (*CollectionFolders, error) {
 	var collection *CollectionFolders
 	err := request(s.url+"/"+s.username+"/collection/folders", params, &collection)
 	return collection, err
+}
+
+// CollectionItemSource ...
+type CollectionItemSource struct {
+	ID               int              `json:"id"`
+	BasicInformation BasicInformation `json:"basic_information"`
+	DateAdded        string           `json:"date_added"`
+	FolderID         int              `json:"folder_id,omitempty"`
+	InstanceID       int              `json:"instance_id"`
+	Notes            string           `json:"notes,omitempty"`
+	Rating           int              `json:"rating"`
+}
+
+// BasicInformation ...
+type BasicInformation struct {
+	ID          int            `json:"id"`
+	Artists     []ArtistSource `json:"artists"`
+	CoverImage  string         `json:"cover_image"`
+	Formats     []Format       `json:"formats"`
+	Labels      []LabelSource  `json:"labels"`
+	Genres      []string       `json:"genres"`
+	MasterID    int            `json:"master_id"`
+	MasterURL   *string        `json:"master_url"`
+	ResourceURL string         `json:"resource_url"`
+	Styles      []string       `json:"styles"`
+	Thumb       string         `json:"thumb"`
+	Title       string         `json:"title"`
+	Year        int            `json:"year"`
+}
+
+// CollectionItems list of items in a user’s collection
+type CollectionItems struct {
+	Pagination Page                   `json:"pagination"`
+	Items      []CollectionItemSource `json:"releases"`
+}
+
+func (s *collectionService) CollectionItemsByFolder(folderID int, pagination *Pagination) (*CollectionItems, error) {
+	var items *CollectionItems
+	err := request(s.url+"/"+s.username+"/collection/folders/"+strconv.Itoa(folderID)+"/releases", pagination.params(), &items)
+	return items, err
+}
+
+func (s *collectionService) CollectionItemsByRelease(releaseID int, pagination *Pagination) (*CollectionItems, error) {
+	var items *CollectionItems
+	err := request(s.url+"/"+s.username+"/collection/releases/"+strconv.Itoa(releaseID), pagination.params(), &items)
+	return items, err
 }

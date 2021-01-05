@@ -8,24 +8,22 @@ import (
 // CollectionService is an interface to work with collection.
 type CollectionService interface {
 	// Retrieve a list of folders in a user’s collection.
-	CollectionFolders() (*CollectionFolders, error)
+	CollectionFolders(username string) (*CollectionFolders, error)
 	// Retrieve a list of items in a folder in a user’s collection.
-	CollectionItemsByFolder(folderID int, pagination *Pagination) (*CollectionItems, error)
+	CollectionItemsByFolder(username string, folderID int, pagination *Pagination) (*CollectionItems, error)
 	// Retrieve the user’s collection folders which contain a specified release.
-	CollectionItemsByRelease(releaseID int, pagination *Pagination) (*CollectionItems, error)
+	CollectionItemsByRelease(username string, releaseID int, pagination *Pagination) (*CollectionItems, error)
 	// Retrieve metadata about a folder in a user’s collection.
-	Folder(folderID int) (*Folder, error)
+	Folder(username string, folderID int) (*Folder, error)
 }
 
 type collectionService struct {
-	url      string
-	username string
+	url string
 }
 
-func newCollectionService(url string, username string) CollectionService {
+func newCollectionService(url string) CollectionService {
 	return &collectionService{
-		url:      url,
-		username: username,
+		url: url,
 	}
 }
 
@@ -37,10 +35,10 @@ type Folder struct {
 	ResourceURL string `json:"resource_url"`
 }
 
-func (s *collectionService) Folder(folderID int) (*Folder, error) {
+func (s *collectionService) Folder(username string, folderID int) (*Folder, error) {
 	params := url.Values{}
 	var folder *Folder
-	err := request(s.url+"/"+s.username+"/collection/folders/"+strconv.Itoa(folderID), params, &folder)
+	err := request(s.url+"/"+username+"/collection/folders/"+strconv.Itoa(folderID), params, &folder)
 	return folder, err
 }
 
@@ -49,10 +47,10 @@ type CollectionFolders struct {
 	Folders []Folder `json:"folders"`
 }
 
-func (s *collectionService) CollectionFolders() (*CollectionFolders, error) {
+func (s *collectionService) CollectionFolders(username string) (*CollectionFolders, error) {
 	params := url.Values{}
 	var collection *CollectionFolders
-	err := request(s.url+"/"+s.username+"/collection/folders", params, &collection)
+	err := request(s.url+"/"+username+"/collection/folders", params, &collection)
 	return collection, err
 }
 
@@ -90,14 +88,14 @@ type CollectionItems struct {
 	Items      []CollectionItemSource `json:"releases"`
 }
 
-func (s *collectionService) CollectionItemsByFolder(folderID int, pagination *Pagination) (*CollectionItems, error) {
+func (s *collectionService) CollectionItemsByFolder(username string, folderID int, pagination *Pagination) (*CollectionItems, error) {
 	var items *CollectionItems
-	err := request(s.url+"/"+s.username+"/collection/folders/"+strconv.Itoa(folderID)+"/releases", pagination.params(), &items)
+	err := request(s.url+"/"+username+"/collection/folders/"+strconv.Itoa(folderID)+"/releases", pagination.params(), &items)
 	return items, err
 }
 
-func (s *collectionService) CollectionItemsByRelease(releaseID int, pagination *Pagination) (*CollectionItems, error) {
+func (s *collectionService) CollectionItemsByRelease(username string, releaseID int, pagination *Pagination) (*CollectionItems, error) {
 	var items *CollectionItems
-	err := request(s.url+"/"+s.username+"/collection/releases/"+strconv.Itoa(releaseID), pagination.params(), &items)
+	err := request(s.url+"/"+username+"/collection/releases/"+strconv.Itoa(releaseID), pagination.params(), &items)
 	return items, err
 }

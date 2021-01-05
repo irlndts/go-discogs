@@ -52,9 +52,9 @@ func TestCollectionServiceFolder(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
-	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
 
-	folder, err := d.Folder(0)
+	folder, err := d.Folder(testUsername, 0)
 	if err != nil {
 		t.Fatalf("failed to get folder: %s", err)
 	}
@@ -71,9 +71,9 @@ func TestCollectionServiceCollectionFolders(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
-	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
 
-	collection, err := d.CollectionFolders()
+	collection, err := d.CollectionFolders(testUsername)
 	if err != nil {
 		t.Fatalf("failed to get collection: %s", err)
 	}
@@ -90,9 +90,9 @@ func TestCollectionServiceCollectionItemsByFolder(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
-	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
 
-	items, err := d.CollectionItemsByFolder(0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
+	items, err := d.CollectionItemsByFolder(testUsername, 0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
 
 	if err != nil {
 		t.Fatalf("failed to get collection items: %s", err)
@@ -110,9 +110,9 @@ func TestCollectionServiceCollectionItemsByRelease(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
-	d := initDiscogsClient(t, &Options{URL: ts.URL, Username: testUsername})
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
 
-	items, err := d.CollectionItemsByRelease(12934893, &Pagination{PerPage: 2})
+	items, err := d.CollectionItemsByRelease(testUsername, 12934893, &Pagination{PerPage: 2})
 
 	if err != nil {
 		t.Fatalf("failed to get collection items: %s", err)

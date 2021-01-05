@@ -97,25 +97,25 @@ Example
 
 #### User Collection
 
-Query a users [collection](https://www.discogs.com/developers#page:user-collection). Ensure that `Username`is set in the client options.
+Query a users [collection](https://www.discogs.com/developers#page:user-collection).
 
 ##### Collection Folders
 Example
 ```go
-  collection, err := client.CollectionFolders()
+  collection, err := client.CollectionFolders("my_user")
 ```
 ##### Folder
 Example
 ```go
-  folder, err := client.Folder(0)
+  folder, err := client.Folder("my_user", 0)
 ```
 ##### Collection Items by Folder
 Example
 ```go
-  items, err := client.CollectionItemsByFolder(0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
+  items, err := client.CollectionItemsByFolder("my_user", 0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
 ```
 ##### Collection Items by Release
 Example
 ```go
-  items, err := client.CollectionItemsByRelease(12934893, &Pagination{PerPage: 2})
+  items, err := client.CollectionItemsByRelease("my_user", 12934893, &Pagination{PerPage: 2})
 ```

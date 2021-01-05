@@ -78,6 +78,7 @@ type Format struct {
 	Descriptions []string `json:"descriptions"`
 	Name         string   `json:"name"`
 	Qty          string   `json:"qty"`
+	Text         string   `json:"text,omitempty"`
 }
 
 // Company ...

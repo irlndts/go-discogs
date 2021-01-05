@@ -6,17 +6,22 @@ go-discogs is a Go client library for the [Discogs API](https://www.discogs.com/
 
 The lib is under MIT but be sure you are familiar with [Discogs API Terms of Use](https://support.discogs.com/hc/en-us/articles/360009334593-API-Terms-of-Use).
 
-### Feauteres
+### Features
  * Database
-  * [Releases](#releases)
-  * Release Rating
-  * Master Releases
-  * Master Versions
-  * Artists
-  * Artist Releases
-  * Label
-  * All Label Releases
+    * [Releases](#releases)
+    * Release Rating
+    * Master Releases
+    * Master Versions
+    * Artists
+    * Artist Releases
+    * Label
+    * All Label Releases
  * [Search](#search)
+ * [User Collection](#user-collection)
+    * Collection Folders
+    * Folder
+    * Collection Items by Folder
+    * Collection Items by Release
  
 Install
 --------
@@ -30,7 +35,7 @@ First of all import library and init client variable. According to discogs api d
 import "github.com/irlndts/go-discogs"
 ```
 
-Some requests require authentification (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
+Some requests require authentication (as any user). According to [Discogs](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow), to send requests with Discogs Auth, you have two options: sending your credentials in the query string with key and secret parameters or a [token parameter](https://www.discogs.com/settings/developers).
 
 ```go
 client, err := discogs.New(&discogs.Options{
@@ -38,6 +43,7 @@ client, err := discogs.New(&discogs.Options{
         Currency:  "EUR", // optional, "USD" (default), "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed
         Token:     "Some Token", // optional
         URL:       "https://api.discogs.com", // optional
+        Username:  "your_user", // optional
     })
 ``` 
 
@@ -87,4 +93,29 @@ Example
   for _, r := range search.Results {
     fmt.Println(r.Title)
   }
+```
+
+#### User Collection
+
+Query a users [collection](https://www.discogs.com/developers#page:user-collection). Ensure that `Username`is set in the client options.
+
+##### Collection Folders
+Example
+```go
+  collection, err := client.CollectionFolders()
+```
+##### Folder
+Example
+```go
+  folder, err := client.Folder(0)
+```
+##### Collection Items by Folder
+Example
+```go
+  items, err := client.CollectionItemsByFolder(0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
+```
+##### Collection Items by Release
+Example
+```go
+  items, err := client.CollectionItemsByRelease(12934893, &Pagination{PerPage: 2})
 ```

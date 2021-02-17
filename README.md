@@ -43,7 +43,6 @@ client, err := discogs.New(&discogs.Options{
         Currency:  "EUR", // optional, "USD" (default), "GBP", "EUR", "CAD", "AUD", "JPY", "CHF", "MXN", "BRL", "NZD", "SEK", "ZAR" are allowed
         Token:     "Some Token", // optional
         URL:       "https://api.discogs.com", // optional
-        Username:  "your_user", // optional
     })
 ``` 
 

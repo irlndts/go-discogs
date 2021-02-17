@@ -78,6 +78,7 @@ type Format struct {
 	Descriptions []string `json:"descriptions"`
 	Name         string   `json:"name"`
 	Qty          string   `json:"qty"`
+	Text         string   `json:"text,omitempty"`
 }
 
 // Company ...
@@ -130,8 +131,8 @@ type Page struct {
 
 // URLsList ...
 type URLsList struct {
-	Last string `json:"last"`
-	Next string `json:"next"`
+	Last string `json:"last,omitempty"`
+	Next string `json:"next,omitempty"`
 }
 
 // Version ...
@@ -188,7 +189,9 @@ type ReleaseSource struct {
 
 // Pagination ...
 type Pagination struct {
-	Sort      string // year, title, format
+	// TODO(irlndts): validate requested Sort
+	Sort string // year, title, format etc
+	// TODO(irlndts): validate requested SortOrder
 	SortOrder string // asc, desc
 	Page      int
 	PerPage   int

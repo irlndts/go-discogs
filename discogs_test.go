@@ -6,6 +6,7 @@ import (
 
 const (
 	testUserAgent = "UnitTestClient/0.0.2"
+	testUsername  = "test_user"
 	testToken     = ""
 )
 

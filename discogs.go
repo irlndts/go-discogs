@@ -26,11 +26,13 @@ type Options struct {
 
 // Discogs is an interface for making Discogs API requests.
 type Discogs interface {
+	CollectionService
 	DatabaseService
 	SearchService
 }
 
 type discogs struct {
+	CollectionService
 	DatabaseService
 	SearchService
 }
@@ -62,6 +64,7 @@ func New(o *Options) (Discogs, error) {
 	}
 
 	return discogs{
+		newCollectionService(o.URL + "/users"),
 		newDatabaseService(o.URL, cur),
 		newSearchService(o.URL + "/database/search"),
 	}, nil

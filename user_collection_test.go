@@ -106,13 +106,25 @@ func TestCollectionServiceCollectionItemsByFolder(t *testing.T) {
 	compareJson(t, string(json), collectionItemsByFolderJson)
 }
 
+func TestCollectionServiceCollectionItemsByFolderError(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
+	defer ts.Close()
+
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
+
+	_, err := d.CollectionItemsByFolder(testUsername, 0, &Pagination{Sort: "invalid"})
+	if err != ErrInvalidSortKey {
+		t.Fatalf("err got=%s; want=%s", err, ErrInvalidSortKey)
+	}
+}
+
 func TestCollectionServiceCollectionItemsByRelease(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
 	defer ts.Close()
 
 	d := initDiscogsClient(t, &Options{URL: ts.URL})
 
-	items, err := d.CollectionItemsByRelease(testUsername, 12934893, &Pagination{PerPage: 2})
+	items, err := d.CollectionItemsByRelease(testUsername, 12934893)
 
 	if err != nil {
 		t.Fatalf("failed to get collection items: %s", err)
@@ -124,4 +136,39 @@ func TestCollectionServiceCollectionItemsByRelease(t *testing.T) {
 	}
 
 	compareJson(t, string(json), collectionItemsByRelease)
+}
+
+func TestCollectionServiceCollectionItemsByReleaseErrors(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(CollectionServer))
+	defer ts.Close()
+	d := initDiscogsClient(t, &Options{URL: ts.URL})
+
+	type testCase struct {
+		username  string
+		releaseID int
+		err       error
+	}
+
+	testCases := map[string]testCase{
+		"invalid username": testCase{
+			username:  "",
+			releaseID: 1,
+			err:       ErrInvalidUsername,
+		},
+		"invalid release id": testCase{
+			username:  "test-username",
+			releaseID: 0,
+			err:       ErrInvalidReleaseID,
+		},
+	}
+
+	for name, tc := range testCases {
+		tc := tc
+		t.Run(name, func(t *testing.T) {
+			_, err := d.CollectionItemsByRelease(tc.username, tc.releaseID)
+			if err != tc.err {
+				t.Fatalf("err got=%s; want=%s", err, tc.err)
+			}
+		})
+	}
 }

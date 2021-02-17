@@ -117,5 +117,5 @@ Example
 ##### Collection Items by Release
 Example
 ```go
-  items, err := client.CollectionItemsByRelease("my_user", 12934893, &Pagination{PerPage: 2})
+  items, err := client.CollectionItemsByRelease("my_user", 12934893)
 ```

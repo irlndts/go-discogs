@@ -1,18 +1,20 @@
 package discogs
 
 import (
-	"net/url"
 	"strconv"
 )
 
 // CollectionService is an interface to work with collection.
 type CollectionService interface {
 	// Retrieve a list of folders in a user’s collection.
+	// If folder_id is not 0, authentication as the collection owner is required.
 	CollectionFolders(username string) (*CollectionFolders, error)
 	// Retrieve a list of items in a folder in a user’s collection.
+	// If folderID is not 0, authentication with token is required.
 	CollectionItemsByFolder(username string, folderID int, pagination *Pagination) (*CollectionItems, error)
 	// Retrieve the user’s collection folders which contain a specified release.
-	CollectionItemsByRelease(username string, releaseID int, pagination *Pagination) (*CollectionItems, error)
+	// The releaseID must be non-zero.
+	CollectionItemsByRelease(username string, releaseID int) (*CollectionItems, error)
 	// Retrieve metadata about a folder in a user’s collection.
 	Folder(username string, folderID int) (*Folder, error)
 }
@@ -36,9 +38,11 @@ type Folder struct {
 }
 
 func (s *collectionService) Folder(username string, folderID int) (*Folder, error) {
-	params := url.Values{}
+	if username == "" {
+		return nil, ErrInvalidUsername
+	}
 	var folder *Folder
-	err := request(s.url+"/"+username+"/collection/folders/"+strconv.Itoa(folderID), params, &folder)
+	err := request(s.url+"/"+username+"/collection/folders/"+strconv.Itoa(folderID), nil, &folder)
 	return folder, err
 }
 
@@ -48,9 +52,11 @@ type CollectionFolders struct {
 }
 
 func (s *collectionService) CollectionFolders(username string) (*CollectionFolders, error) {
-	params := url.Values{}
+	if username == "" {
+		return nil, ErrInvalidUsername
+	}
 	var collection *CollectionFolders
-	err := request(s.url+"/"+username+"/collection/folders", params, &collection)
+	err := request(s.url+"/"+username+"/collection/folders", nil, &collection)
 	return collection, err
 }
 
@@ -88,14 +94,42 @@ type CollectionItems struct {
 	Items      []CollectionItemSource `json:"releases"`
 }
 
+// valid sort keys
+// https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-folder
+var validItemsByFolderSort = map[string]struct{}{
+	"":       struct{}{},
+	"label":  struct{}{},
+	"artist": struct{}{},
+	"title":  struct{}{},
+	"catno":  struct{}{},
+	"format": struct{}{},
+	"rating": struct{}{},
+	"added":  struct{}{},
+	"year":   struct{}{},
+}
+
 func (s *collectionService) CollectionItemsByFolder(username string, folderID int, pagination *Pagination) (*CollectionItems, error) {
+	if username == "" {
+		return nil, ErrInvalidUsername
+	}
+	if pagination != nil {
+		if _, ok := validItemsByFolderSort[pagination.Sort]; !ok {
+			return nil, ErrInvalidSortKey
+		}
+	}
 	var items *CollectionItems
 	err := request(s.url+"/"+username+"/collection/folders/"+strconv.Itoa(folderID)+"/releases", pagination.params(), &items)
 	return items, err
 }
 
-func (s *collectionService) CollectionItemsByRelease(username string, releaseID int, pagination *Pagination) (*CollectionItems, error) {
+func (s *collectionService) CollectionItemsByRelease(username string, releaseID int) (*CollectionItems, error) {
+	if username == "" {
+		return nil, ErrInvalidUsername
+	}
+	if releaseID == 0 {
+		return nil, ErrInvalidReleaseID
+	}
 	var items *CollectionItems
-	err := request(s.url+"/"+username+"/collection/releases/"+strconv.Itoa(releaseID), pagination.params(), &items)
+	err := request(s.url+"/"+username+"/collection/releases/"+strconv.Itoa(releaseID), nil, &items)
 	return items, err
 }

@@ -22,6 +22,9 @@ The lib is under MIT but be sure you are familiar with [Discogs API Terms of Use
     * Folder
     * Collection Items by Folder
     * Collection Items by Release
+ * [Marketplace](#marketplace)
+    * Price Suggestions
+    * Release Statistics
  
 Install
 --------
@@ -84,7 +87,6 @@ type SearchRequest struct {
 }
 ```
 
-Example
 ```go
   request := discogs.SearchRequest{Artist: "reggaenauts", ReleaseTitle: "river rock", Page: 0, PerPage: 1}
   search, _ := client.Search(request)
@@ -99,22 +101,38 @@ Example
 Query a users [collection](https://www.discogs.com/developers#page:user-collection).
 
 ##### Collection Folders
-Example
 ```go
   collection, err := client.CollectionFolders("my_user")
 ```
 ##### Folder
-Example
 ```go
   folder, err := client.Folder("my_user", 0)
 ```
 ##### Collection Items by Folder
-Example
 ```go
   items, err := client.CollectionItemsByFolder("my_user", 0, &Pagination{Sort: "artist", SortOrder: "desc", PerPage: 2})
 ```
 ##### Collection Items by Release
-Example
 ```go
   items, err := client.CollectionItemsByRelease("my_user", 12934893)
+```
+
+#### Marketplace
+
+Query a user's [marketplace](https://www.discogs.com/developers/#page:marketplace)
+
+##### Price Suggestions
+
+Retrieve price suggestions for the provided Release ID
+
+```go
+  suggestions, err := client.PriceSuggestions(12345)
+```
+
+##### Release Statistics
+
+Retrieve marketplace statistics for the provided Release ID
+
+```go
+  stats, err := client.ReleaseStatisctics(12345)
 ```

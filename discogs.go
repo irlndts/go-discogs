@@ -28,6 +28,7 @@ type Options struct {
 type Discogs interface {
 	CollectionService
 	DatabaseService
+	MarketPlaceService
 	SearchService
 }
 
@@ -35,6 +36,7 @@ type discogs struct {
 	CollectionService
 	DatabaseService
 	SearchService
+	MarketPlaceService
 }
 
 var header *http.Header
@@ -67,6 +69,7 @@ func New(o *Options) (Discogs, error) {
 		newCollectionService(o.URL + "/users"),
 		newDatabaseService(o.URL, cur),
 		newSearchService(o.URL + "/database/search"),
+		newMarketPlaceService(o.URL+"/marketplace", cur),
 	}, nil
 }
 

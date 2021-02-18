@@ -134,3 +134,7 @@ Retrieve marketplace statistics for the provided Release ID
 ```go
   stats, err := client.ReleaseStatisctics(12345)
 ```
+
+...
+
+by the way, this is [my discogs page](https://www.discogs.com/user/magnetic-loft-music)

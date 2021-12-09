@@ -16,10 +16,11 @@ func (e *Error) Error() string {
 
 // APIErrors
 var (
-	ErrUnauthorized         = &Error{"authentication required"}
 	ErrCurrencyNotSupported = &Error{"currency does not supported"}
-	ErrUserAgentInvalid     = &Error{"invalid user-agent"}
 	ErrInvalidReleaseID     = &Error{"invalid release id"}
 	ErrInvalidSortKey       = &Error{"invalid sort key"}
 	ErrInvalidUsername      = &Error{"invalid username"}
+	ErrTooManyRequests      = &Error{"too many requests"}
+	ErrUnauthorized         = &Error{"authentication required"}
+	ErrUserAgentInvalid     = &Error{"invalid user-agent"}
 )

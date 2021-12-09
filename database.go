@@ -119,7 +119,7 @@ type Artist struct {
 	ResourceURL    string   `json:"resource_url"`
 	URI            string   `json:"uri"`
 	URLs           []string `json:"urls"`
-	Groups         []Member `json:"groups"`
+	Groups         []Member `json:"groups,omitempty"`
 	DataQuality    string   `json:"data_quality"`
 }
 

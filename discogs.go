@@ -105,6 +105,8 @@ func request(path string, params url.Values, resp interface{}) error {
 		switch response.StatusCode {
 		case http.StatusUnauthorized:
 			return ErrUnauthorized
+		case http.StatusTooManyRequests:
+			return ErrTooManyRequests
 		default:
 			return fmt.Errorf("unknown error: %s", response.Status)
 		}

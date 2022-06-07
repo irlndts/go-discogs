@@ -132,7 +132,7 @@ Retrieve price suggestions for the provided Release ID
 Retrieve marketplace statistics for the provided Release ID
 
 ```go
-  stats, err := client.ReleaseStatisctics(12345)
+  stats, err := client.ReleaseStatistics(12345)
 ```
 
 ...

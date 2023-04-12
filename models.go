@@ -187,6 +187,12 @@ type ReleaseSource struct {
 	Type        string `json:"type"`
 }
 
+// Notes ...
+type Notes struct {
+	FieldID int    `json:"field_id"`
+	Value   string `json:"value"`
+}
+
 // Pagination ...
 type Pagination struct {
 	// TODO(irlndts): validate requested Sort

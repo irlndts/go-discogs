@@ -67,7 +67,7 @@ type CollectionItemSource struct {
 	DateAdded        string           `json:"date_added"`
 	FolderID         int              `json:"folder_id,omitempty"`
 	InstanceID       int              `json:"instance_id"`
-	Notes            string           `json:"notes,omitempty"`
+	Notes            []Notes          `json:"notes,omitempty"`
 	Rating           int              `json:"rating"`
 }
 

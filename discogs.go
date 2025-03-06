@@ -3,7 +3,7 @@ package discogs
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 )
@@ -112,7 +112,7 @@ func request(path string, params url.Values, resp interface{}) error {
 		}
 	}
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return err
 	}

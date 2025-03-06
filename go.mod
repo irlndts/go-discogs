@@ -1,5 +1,5 @@
 module github.com/irlndts/go-discogs
 
-go 1.17
+go 1.24
 
-require github.com/google/go-cmp v0.5.6
+require github.com/google/go-cmp v0.7.0

@@ -46,6 +46,9 @@ type SearchRequest struct {
 	Submitter    string // search submitter username
 	Contributor  string // search contributor usernames
 
+	Sort      string // sort results
+	SortOrder string // one of asc, desc (default)
+
 	Page    int
 	PerPage int
 }
@@ -110,6 +113,13 @@ func (r *SearchRequest) params() url.Values {
 	}
 	if r.Contributor != "" {
 		params.Set("contributor", r.Contributor)
+	}
+
+	if r.Sort != "" {
+		params.Set("sort", r.Sort)
+	}
+	if r.SortOrder != "" {
+		params.Set("sort_order", r.SortOrder)
 	}
 
 	params.Set("page", strconv.Itoa(r.Page))

@@ -80,6 +80,9 @@ type SearchRequest struct {
     Submitter     string // search submitter username (optional)
     Contributer   string // search contributor usernames (optional)
 
+    Sort      string // sort results (optional)
+    SortOrder string // one of asc, desc (default) (optional)
+
     Page     int // optional
     PerPage  int // optional
 }
